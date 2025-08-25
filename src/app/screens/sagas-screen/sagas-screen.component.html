@@ -1,0 +1,147 @@
+<!-- sagas-screen.component.html -->
+<section class="sagas-screen" aria-label="Sagas de Dragon Ball Z">
+  <!-- Loading -->
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <!-- Shell común -->
+  <app-navbar></app-navbar>
+  <app-sidenav></app-sidenav>
+
+  <main class="main-content" [class.hidden]="isLoading" role="main">
+    <!-- Encabezado -->
+    <app-page-header
+      [title]="'Sagas'"
+      [subtitle]="'Consulta las sagas y los rangos de episodios que las componen'">
+    </app-page-header>
+
+    <!-- Toolbar -->
+    <!-- Toolbar: Buscar + Ordenar (Material, estilo “pill”) -->
+    <!-- Toolbar: Buscar + Ordenar (Material, estilo “pill”) -->
+    <div class="toolbar" role="region" aria-label="Herramientas de búsqueda y orden" *ngIf="!isLoading">
+      <div class="toolbar-row">
+
+        <!-- Grupo: Buscar -->
+        <div class="field-group">
+          <label class="toolbar-label" for="buscarSagasMat">Buscar:</label>
+          <mat-form-field appearance="outline" class="pill-field search-mat-field">
+            <mat-icon class="search-prefix" matPrefix>search</mat-icon>
+            <input
+              matInput
+              id="buscarSagasMat"
+              type="search"
+              [value]="query"
+              (input)="onSearch($event)"
+              placeholder="Nombre de la saga"
+              aria-label="Buscar saga por nombre" />
+          </mat-form-field>
+        </div>
+
+        <span class="spacer"></span>
+
+        <!-- Grupo: Ordenar -->
+        <div class="field-group">
+          <label class="toolbar-label" for="ordenSagasMat">Ordenar por:</label>
+          <mat-form-field appearance="outline" class="pill-field orden-mat-field" #ordenAnchor>
+            <mat-select
+              id="ordenSagasMat"
+              [value]="ordenActual"
+              (selectionChange)="onOrdenChange($event.value)"
+              panelClass="orden-panel"
+              aria-label="Ordenar sagas por">
+              <mat-option value="natural">Orden cronológico</mat-option>
+              <mat-option value="az">Nombre (A–Z)</mat-option>
+              <mat-option value="za">Nombre (Z–A)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div class="empty-state" *ngIf="!isLoading && (!sagas || sagas.length === 0)">
+      <p>No se encontraron sagas que coincidan con la búsqueda.</p>
+    </div>
+
+    <!-- Acordeón de sagas -->
+    <mat-accordion
+      *ngIf="!isLoading && sagas && sagas.length"
+      class="sagas-list"
+      multi
+      displayMode="flat"
+      aria-label="Listado de sagas">
+
+      <mat-expansion-panel
+        *ngFor="let s of sagas; trackBy: trackBySagaId"
+        class="saga-panel">
+
+        <mat-expansion-panel-header>
+          <mat-panel-title class="header-inline">
+            <span class="header-title">{{ s.name }}</span>
+
+            <span class="series-chip"
+                  [ngClass]="{
+                    'series--DB': s.series === 'Dragon Ball',
+                    'series--DBZ': s.series === 'Dragon Ball Z',
+                    'series--GT': s.series === 'Dragon Ball GT',
+                    'series--DBS': s.series === 'Dragon Ball Super'
+                  }"
+                  *ngIf="s.series">{{ s.series }}</span>
+
+            <span class="ep-range">Episodios {{ s.episodeStart }}–{{ s.episodeEnd }}</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <!-- Body -->
+        <div class="panel-body">
+          <p class="saga-description" *ngIf="s.summary; else noResumen">
+            {{ s.summary }}
+          </p>
+          <ng-template #noResumen>
+            <p class="saga-description muted">Sin sinopsis disponible.</p>
+          </ng-template>
+
+          <div class="saga-meta">
+            <div class="meta-item">
+              <div class="label">Episodios</div>
+              <div class="value">{{ s.episodeEnd - s.episodeStart + 1 }}</div>
+            </div>
+            <div class="meta-item" *ngIf="s.season">
+              <div class="label">Temporada</div>
+              <div class="value">{{ s.season }}</div>
+            </div>
+            <div class="meta-item" *ngIf="s.year">
+              <div class="label">Año</div>
+              <div class="value">{{ s.year }}</div>
+            </div>
+          </div>
+
+          <div *ngIf="s.arcs?.length">
+            <h4 class="h6">Arcos</h4>
+            <ol>
+              <li *ngFor="let arc of s.arcs">
+                {{ arc.name }}
+                <span *ngIf="arc.episodeStart && arc.episodeEnd" class="arc-range">
+                  — Ep. {{ arc.episodeStart }}–{{ arc.episodeEnd }}
+                </span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <!-- Paginación -->
+    <mat-paginator
+      *ngIf="!isLoading && totalItems > pageSize"
+      [length]="totalItems"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      aria-label="Paginación de sagas">
+    </mat-paginator>
+  </main>
+
+  <app-footer></app-footer>
+</section>

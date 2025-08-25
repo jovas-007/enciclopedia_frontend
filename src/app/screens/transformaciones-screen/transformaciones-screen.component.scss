@@ -1,0 +1,334 @@
+/* ============================
+   TRANSFORMACIONES – Mobile first
+   Enfatiza legibilidad sobre fondo con gradiente
+   ============================ */
+
+:host {
+  display: block;
+}
+
+/* ------- Layout principal ------- */
+.transformaciones-screen .main-content {
+  flex: 1;
+  padding: 16px;
+  margin-top: 56px;              /* Altura navbar en móvil */
+  color: var(--text-primary);
+}
+
+@media (min-width: 768px) {
+  .transformaciones-screen .main-content {
+    margin-top: 64px;            /* Navbar tablet/escritorio */
+    padding: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .transformaciones-screen .main-content {
+    margin-left: 280px;          /* deja espacio al sidenav fijo */
+    max-width: calc(100% - 280px);
+    padding: 24px 28px;
+  }
+}
+
+/* ------- Superficies con buen contraste (sobre el degradado del body) ------- */
+
+.surface {
+  background: rgba(255,255,255,0.86);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+
+/* Encabezado (ya es card propio) separamos del resto */
+app-page-header {
+  display: block;
+  margin-bottom: 14px;
+}
+
+/* ------- TOOLBAR (buscador + select + CTA admin) ------- */
+
+.toolbar {
+  @extend .surface;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr;             /* móvil: una columna */
+  row-gap: 10px;
+  column-gap: 10px;
+  align-items: center;
+
+  .toolbar-row {
+    display: grid;
+    grid-template-columns: max-content minmax(180px, 1fr)
+                           max-content minmax(160px, 260px)
+                           1fr max-content;  /* label, input, label, select, spacer, btn */
+    gap: 10px;
+    align-items: center;
+  }
+
+  .toolbar-label {
+    font-size: .92rem;
+    color: #1f2937;                        /* oscuro para mejor contraste sobre surface clara */
+    white-space: nowrap;
+  }
+
+  .spacer { width: 100%; }
+
+  /* Buscador */
+  .search-field input[type="search"] {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,0.10);
+    background: #fff;
+    color: var(--text-primary);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+
+    &::placeholder { color: rgba(0,0,0,0.45); }
+    &:hover       { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,0.10); }
+    &:focus       {
+      outline: none;
+      border-color: #ffeb3b;
+      box-shadow:
+        0 0 0 2px rgba(255,235,59,0.25),
+        0 8px 24px rgba(0,0,0,0.12);
+    }
+  }
+
+  /* Select Material en forma de pastilla (usamos el que ya tenías) */
+  .orden-mat-field {
+    width: 100%;
+    max-width: 260px;
+
+    /* Caja/trigger tipo pastilla */
+    ::ng-deep .mdc-text-field--outlined {
+      background: linear-gradient(135deg, var(--primary-orange), var(--primary-blue));
+      border-radius: 999px;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,0,0,.15);
+      transition: box-shadow .15s ease, transform .12s ease, border-color .15s ease;
+      min-height: 40px;
+      border: none;                         /* evita borde negro al hover/focus */
+      outline: none;
+    }
+
+    /* Borde interior del outline */
+    ::ng-deep .mdc-notched-outline__leading,
+    ::ng-deep .mdc-notched-outline__trailing {
+      border-color: rgba(255,255,255,0.25);
+    }
+
+    /* Infix */
+    ::ng-deep .mat-mdc-form-field-infix {
+      padding: 8px 16px !important;
+      min-height: 40px;
+    }
+
+    /* Texto flecha/label en blanco */
+    ::ng-deep .mat-mdc-select-value,
+    ::ng-deep .mat-mdc-select-arrow,
+    ::ng-deep .mdc-floating-label {
+      color: #fff;
+    }
+
+    /* Quita espacio de mensajes */
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper { display: none; }
+
+    /* Hover/focus sin borde “cuadrado” */
+    ::ng-deep .mdc-text-field--outlined:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(0,0,0,.20);
+      outline: none;
+    }
+    ::ng-deep .mdc-text-field--focused .mdc-notched-outline__leading,
+    ::ng-deep .mdc-text-field--focused .mdc-notched-outline__trailing {
+      border-color: #ffeb3b;
+    }
+  }
+
+  /* CTA admin */
+  .add-btn {
+    display: inline-flex;
+    align-items: center; gap: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary-orange), var(--primary-blue));
+    color: #fff; border: none;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+
+    i { font-size: .9rem; }
+    &:hover  { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(0,0,0,.25); filter: brightness(1.03); }
+    &:active { transform: translateY(0);     box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+  }
+}
+
+/* Layout de toolbar responsivo */
+@media (max-width: 720px) {
+  .toolbar .toolbar-row {
+    grid-template-columns: max-content 1fr;        /* 2 columnas: label + control */
+    grid-auto-rows: auto;
+  }
+  .toolbar .toolbar-label:nth-of-type(2) { margin-top: 6px; } /* separa ‘Raza’ del buscador */
+  .toolbar .spacer { display: none; }
+}
+@media (min-width: 1024px) {
+  .toolbar { padding: 14px 16px; }
+}
+
+/* ------- GRID de tarjetas (cuando existan resultados) ------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;    /* móvil: 1 */
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 600px) {
+  .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+}
+@media (min-width: 1024px) {
+  .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+}
+
+/* ------- Tarjeta de personaje ------- */
+.card.personaje-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0,0,0,.18);
+  }
+}
+
+/* cabecera visual de la card */
+.personaje-card .image-container {
+  position: relative;
+  aspect-ratio: 16/9;
+  background:
+    radial-gradient(120% 120% at 20% 10%, #0b1a3a 0%, #111 60%, #000 100%),
+    linear-gradient(135deg, rgba(255,140,0,.15), rgba(25,118,210,.15));
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.personaje-card .character-image {
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center bottom;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,.45));
+}
+
+.personaje-card .card-body { padding: 14px 14px 16px; }
+
+.personaje-card .character-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.15rem; font-weight: 700;
+  margin: 0 0 6px;
+  color: #0f172a;            /* título en oscuro para contraste sobre card clara */
+}
+
+.personaje-card .meta {
+  font-size: .92rem; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+  .sep { opacity: .45; }
+}
+
+/* Chips de transformaciones */
+.personaje-card .chips {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+}
+.personaje-card .chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px; border-radius: 999px;
+  background: rgba(255,235,59,.12);
+  color: #7a5b00;                        /* texto oscuro legible sobre amarillo claro */
+  font-weight: 700; font-size: .86rem;
+  border: 1px solid rgba(255,235,59,.45);
+  i { color: #b78900; font-size: .9rem; }
+}
+.personaje-card .chip-muted {
+  background: rgba(0,0,0,.04);
+  color: var(--text-secondary);
+  border-color: rgba(0,0,0,.06);
+}
+
+/* Acciones admin */
+.personaje-card .admin-actions {
+  display: flex; gap: 10px; margin-top: 4px;
+
+  .btn {
+    border-radius: 10px; padding: 8px 12px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+    i { font-size: .9rem; }
+  }
+  .btn.btn-secondary {
+    background: linear-gradient(135deg, var(--primary-orange), var(--primary-blue));
+    color: #fff; border: none; box-shadow: 0 6px 18px rgba(0,0,0,.2);
+    &:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+  }
+  .btn.btn-outline {
+    background: transparent; border: 1px solid rgba(0,0,0,.20); color: #0f172a;
+    &:hover { filter: brightness(1.06); }
+  }
+}
+
+/* ------- Estado vacío con “cuerpo” visual ------- */
+.empty-card {
+  @extend .surface;
+  min-height: 220px;
+  padding: 20px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+}
+.empty-body { max-width: 560px; margin: 0 auto; }
+.empty-message {
+  font-size: 1.12rem; font-weight: 700; color: #0f172a; margin: 0 0 6px;
+}
+.empty-sub {
+  font-size: .96rem; color: var(--text-secondary); opacity: .9; margin: 0;
+}
+
+/* ------- Paginador ------- */
+::ng-deep .mat-mdc-paginator {
+  background: transparent;
+  color: var(--text-primary);
+  margin-top: 8px;
+}
+::ng-deep .mat-mdc-paginator-range-actions .mat-mdc-icon-button { color: var(--text-primary); }
+::ng-deep .mat-mdc-paginator-page-size-label,
+::ng-deep .mat-mdc-paginator-range-label { color: var(--text-secondary); }
+
+/* ------- Panel del mat-select con tema oscuro/amarillo (overlay) ------- */
+:global(.orden-panel.mat-mdc-select-panel) {
+  background: #0b0b0b !important;
+  color: #ffeb3b !important;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+  padding: 6px 0;
+  min-width: 260px;  /* que no quede más angosto que el trigger */
+
+  .mat-mdc-option { color: #ffeb3b !important; }
+  .mat-mdc-option:hover,
+  .mat-mdc-option.mdc-list-item--selected { background: rgba(255,235,59,.10) !important; }
+
+  /* check/íconos en amarillo */
+  .mat-pseudo-checkbox,
+  .mat-pseudo-checkbox::after,
+  .mat-mdc-option .mat-mdc-option-icon,
+  .mat-mdc-option svg {
+    color: #ffeb3b !important;
+    fill:  #ffeb3b !important;
+    border-color: #ffeb3b !important;
+  }
+}

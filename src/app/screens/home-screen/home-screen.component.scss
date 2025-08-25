@@ -1,0 +1,120 @@
+/* Hacer que el componente ocupe todo el ancho disponible */
+:host {
+  display: block;
+}
+
+/* Contenedor principal: mobile-first */
+section.home-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+}
+
+/* Main content: móvil */
+.main-content {
+  flex: 1;
+  padding: 16px;
+  margin-top: 56px;   /* altura navbar móvil */
+  transition: opacity 0.3s;
+}
+
+.main-content.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Estadísticas en 1 columna */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Tarjetas de estadística: ancho completo en móvil */
+.stat-card {
+  width: 100%;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Tarjeta descriptiva: ancho completo en móvil */
+.card {
+  width: 100%;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin-bottom: 8px;
+}
+
+/* TABLETA: pantallas ≥ 600px */
+@media (min-width: 600px) {
+  .main-content {
+    margin-top: 64px;  /* navbar más alta en tablet/desktop */
+  }
+
+  /* Estadísticas en 2 columnas */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  /* Tarjeta descriptiva centrada con ancho máximo */
+  .card {
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+}
+
+/* ESCRITORIO: pantallas ≥ 1024px */
+@media (min-width: 1024px) {
+  /* Ajuste para dejar espacio al sidenav fijo */
+  .main-content {
+    margin-left: 280px; /* ancho de tu sidenav */
+    margin-top: 64px;
+    padding: 32px;
+    max-width: calc(100% - 280px);
+  }
+
+  /* Estadísticas en 4 columnas */
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  /* Tarjeta descriptiva más ancha */
+  .card {
+    max-width: 800px;
+    margin: 0 auto 32px;
+  }
+}

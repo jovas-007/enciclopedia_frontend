@@ -1,0 +1,62 @@
+<!-- Contenedor principal de la pantalla Home -->
+<section class="home-screen">
+
+  <!-- Spinner de carga: overlay visible mientras isLoading = true -->
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <!-- Barra de navegación superior (navbar) -->
+  <app-navbar></app-navbar>
+
+  <!-- Menú lateral (sidenav) -->
+  <app-sidenav></app-sidenav>
+
+  <!-- Contenido principal: oculto cuando isLoading = true -->
+  <main class="main-content" [class.hidden]="isLoading">
+
+    <!-- Encabezado de página con título y subtítulo -->
+    <app-page-header
+      [title]="'Bienvenido a la DBZ Encyclopedia'"
+      [subtitle]="'Tu fuente completa de información sobre Dragon Ball Z'">
+    </app-page-header>
+
+    <!-- Cuadrícula de estadísticas -->
+    <div class="stats-grid">
+      <!-- Tarjeta: número total de personajes -->
+      <div class="stat-card">
+        <div class="stat-number">{{ charactersCount }}</div>
+        <div class="stat-label">Personajes</div>
+      </div>
+      <!-- Tarjeta: número total de transformaciones -->
+      <div class="stat-card">
+        <div class="stat-number">{{ transformationsCount }}</div>
+        <div class="stat-label">Transformaciones</div>
+      </div>
+      <!-- Tarjeta: número total de sagas -->
+      <div class="stat-card">
+        <div class="stat-number">{{ sagasCount }}</div>
+        <div class="stat-label">Sagas</div>
+      </div>
+      <!-- Tarjeta: número total de episodios -->
+      <div class="stat-card">
+        <div class="stat-number">{{ episodesCount }}</div>
+        <div class="stat-label">Episodios</div>
+      </div>
+    </div>
+
+    <!-- Tarjeta descriptiva: breve explicación de la aplicación -->
+    <div class="card">
+      <h3 class="card-title">¿Qué es DBZ Encyclopedia?</h3>
+      <p>
+        DBZ Encyclopedia es una plataforma fan-made que centraliza toda la información
+        relevante de Dragon Ball Z: personajes, transformaciones, sagas y estadísticas.
+        Con ella podrás consultar datos detallados, explorar gráficas y permanecer
+        siempre al día con tu universo favorito.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Pie de página con información de contacto, autor y enlaces rápidos -->
+  <app-footer></app-footer>
+
+</section>

@@ -1,0 +1,161 @@
+<section class="transformaciones-screen" aria-label="Transformaciones DBZ">
+  <!-- Loading -->
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <!-- Shell común -->
+  <app-navbar></app-navbar>
+  <app-sidenav></app-sidenav>
+
+  <main class="main-content" [class.hidden]="isLoading" role="main">
+    <!-- Encabezado -->
+    <app-page-header
+      [title]="'Transformaciones'"
+      [subtitle]="'Explora las transformaciones de los personajes de Dragon Ball Z'">
+    </app-page-header>
+
+    <!-- Barra de herramientas -->
+    <div class="toolbar" role="region" aria-label="Herramientas de exploración">
+      <div class="toolbar-row">
+        <!-- Buscador -->
+        <label class="toolbar-label" for="buscador">Buscar:</label>
+        <div class="search-field">
+          <input
+            id="buscador"
+            type="search"
+            [value]="query"
+            (input)="onSearch($event)"
+            placeholder="Nombre de personaje o transformación…"
+            aria-label="Buscar personaje o transformación" />
+        </div>
+
+        <!-- Filtro por raza -->
+        <label class="toolbar-label" for="filtroRaza">Raza:</label>
+        <mat-form-field appearance="outline" class="orden-mat-field" id="filtroRaza">
+          <mat-select
+            [value]="filtroRaza"
+            (selectionChange)="onFiltroChange($event.value)"
+            [panelClass]="'orden-panel'"
+            aria-label="Filtrar por raza">
+            <mat-option [value]="''">Todas</mat-option>
+            <mat-option value="Saiyan">Saiyan</mat-option>
+            <mat-option value="Human">Human</mat-option>
+            <mat-option value="Namekian">Namekian</mat-option>
+            <mat-option value="Android">Android</mat-option>
+            <mat-option value="Frieza Race">Frieza Race</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Botón Registrar (solo admin) -->
+        <span class="spacer"></span>
+        <ng-container *ngIf="(isAdmin$ | async) === true">
+          <button
+            type="button"
+            class="btn btn-primary add-btn"
+            (click)="irARegistrarTransformacion()"
+            aria-label="Registrar nueva transformación">
+            <i class="fas fa-plus"></i>
+            <span>Registrar transformación</span>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- ===== Estado vacío como “card” ===== -->
+    <ng-container *ngIf="!isLoading && personajesConTransfs && personajesConTransfs.length === 0">
+      <div class="cards-grid">
+        <div class="empty-card" aria-live="polite">
+          <div class="empty-body">
+            <p class="empty-message">
+              No hay personajes con transformaciones registrados.
+            </p>
+            <p class="empty-sub">
+              Cuando se agreguen transformaciones (o cambies la búsqueda y filtros), aparecerán aquí.
+            </p>
+
+            <!-- Call-to-action solo para administradores -->
+            <div *ngIf="(isAdmin$ | async) === true" style="margin-top:12px;">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="irARegistrarTransformacion()">
+                <i class="fas fa-plus"></i> Registrar transformación
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginador oculto en vacío -->
+    </ng-container>
+
+    <!-- ===== Grid con resultados ===== -->
+    <div class="cards-grid"
+         *ngIf="!isLoading && personajesConTransfs && personajesConTransfs.length">
+      <article class="card personaje-card"
+               *ngFor="let p of personajesConTransfs"
+               aria-label="Ficha de personaje con transformaciones">
+        <!-- Imagen del personaje -->
+        <div class="image-container"
+             (click)="irADetallePersonaje(p.id)"
+             role="button"
+             tabindex="0"
+             [attr.aria-label]="'Ver detalle de ' + p.name">
+          <img
+            class="character-image"
+            [src]="p.image"
+            [alt]="p.name"
+            loading="lazy"
+            decoding="async"
+            (error)="onImgError($event)">
+        </div>
+
+        <!-- Contenido -->
+        <div class="card-body">
+          <h3 class="character-name">{{ p.name }}</h3>
+
+          <div class="meta">
+            <span class="race">{{ p.race }}</span>
+            <span class="sep">•</span>
+            <span class="gender">{{ p.gender }}</span>
+          </div>
+
+          <!-- Chips con transformaciones -->
+          <div class="chips" aria-label="Transformaciones">
+            <ng-container *ngIf="p.transformations?.length; else sinTransfs">
+              <span class="chip" *ngFor="let t of p.transformations">
+                <i class="fas fa-bolt"></i>
+                {{ t.name }}
+              </span>
+            </ng-container>
+            <ng-template #sinTransfs>
+              <span class="chip chip-muted">Sin transformaciones</span>
+            </ng-template>
+          </div>
+
+          <!-- Acciones de administración (solo admin) -->
+          <div class="admin-actions" *ngIf="(isAdmin$ | async) === true">
+            <button class="btn btn-secondary" (click)="irARegistrarTransformacion(p)">
+              <i class="fas fa-plus"></i> Agregar transformación
+            </button>
+            <button class="btn btn-outline" (click)="irADetallePersonaje(p.id)">
+              <i class="fas fa-eye"></i> Ver detalle
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Paginación (solo cuando hay resultados) -->
+    <mat-paginator
+      *ngIf="!isLoading && personajesConTransfs && personajesConTransfs.length && totalItems > pageSize"
+      [length]="totalItems"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      aria-label="Paginación de transformaciones">
+    </mat-paginator>
+  </main>
+
+  <app-footer></app-footer>
+</section>

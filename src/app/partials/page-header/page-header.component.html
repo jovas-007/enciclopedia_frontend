@@ -1,0 +1,15 @@
+<section class="app-page-header">
+  <div class="page-header">
+    <div class="flex-between" *ngIf="title && subtitle; else simpleHeader">
+      <div>
+        <h1 class="page-title">{{ title }}</h1>
+        <p class="page-subtitle">{{ subtitle }}</p>
+      </div>
+      <ng-content select="[header-actions]"></ng-content>
+    </div>
+    <ng-template #simpleHeader>
+      <h1 class="page-title">{{ title }}</h1>
+      <p class="page-subtitle">{{ subtitle }}</p>
+    </ng-template>
+  </div>
+</section>

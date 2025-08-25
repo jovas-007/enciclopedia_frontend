@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+/* Contenedor principal */
+.page-header {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Título grande */
+.page-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 8px;
+}
+
+/* Subtítulo */
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Ajustes para pantallas ≥768px */
+@media (min-width: 768px) {
+  .page-header {
+    padding: 30px;
+    margin-bottom: 30px;
+  }
+  .page-title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  .page-subtitle {
+    font-size: 1.1rem;
+  }
+}

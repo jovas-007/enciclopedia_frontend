@@ -1,0 +1,220 @@
+:host {
+  display: block;
+}
+
+/* ==========================================================================
+   1. Estilos base (mobile-first, 0–1023px)
+   ========================================================================== */
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: linear-gradient(90deg, var(--primary-orange), var(--primary-blue));
+  color: white;
+  padding: 8px 16px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(10px);
+}
+
+/* Logo + marca */
+.navbar-brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.2rem;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s;
+}
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+.navbar-brand i {
+  margin-right: 8px;
+  font-size: 1.5rem;
+  color: #ffeb3b;
+}
+
+/* Botón hamburguesa (siempre visible en móvil hasta 1023px) */
+.hamburger {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Menú de enlaces oculto en móvil */
+.navbar-menu {
+  display: none;
+  list-style: none;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Sección de usuario */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative; /* para luego posicionarlo absolute en ≤600px */
+}
+#userGreeting {
+  /* se mostrará en desktop, en móvil lo ocultaremos más abajo */
+}
+.user-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--light-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8rem;
+  border: 2px solid rgba(255,255,255,0.3);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.user-avatar:hover {
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   2. Ajustes específicos para móvil pequeño (≤600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  /* Mantener navbar de altura fija sin hacer wrap */
+  .navbar {
+    height: 56px;
+    padding: 0 16px;
+    overflow: visible; /* para que el avatar no se corte */
+  }
+
+  /* Avatar + login absolute para que no empuje contenido */
+  .user-section {
+    position: absolute;
+    top: 0; right: 16px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    z-index: 1;
+  }
+
+  /* Ocultar saludo para ganar espacio */
+  #userGreeting {
+    display: none;
+  }
+
+  /* Avatar más compacto */
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  /* Botón más compacto */
+  #authBtn {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ==========================================================================
+   3. Vista móvil extendida (≤1023px)
+   ========================================================================== */
+/* Hasta 1023px seguimos en “mobile”:
+   - hamburguesa visible
+   - menú oculto
+   - ajustes de ≤600px ya aplicados */
+@media (max-width: 1023px) {
+  .hamburger {
+    display: block;
+  }
+  .navbar-menu {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   4. Vista escritorio (≥1024px)
+   ========================================================================== */
+@media (min-width: 1024px) {
+  /* Hamburguesa oculta, menú horizontal */
+  .hamburger {
+    display: none;
+  }
+  .navbar-menu {
+    display: flex;
+    gap: 30px;
+    /* Asegura que los items estén alineados en el eje vertical */
+    padding-top: 1rem;
+  }
+
+  /* Altura y padding ligeramente mayores */
+  .navbar {
+    height: 64px;
+    padding: 0 20px;
+  }
+
+  /* Marca más grande */
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+  .navbar-brand i {
+    font-size: 2rem;
+    margin-right: 10px;
+  }
+
+  /* Usuario en flujo normal */
+  .user-section {
+    position: static;
+    gap: 15px;
+  }
+  #userGreeting {
+    display: inline-block;
+  }
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  /* Links como “botones” pill-shaped y cursor de mano */
+  .navbar-menu li a {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-weight: 500;
+    align-items: center;
+    transition: background 0.2s ease;
+    cursor: pointer;
+  }
+  .navbar-menu li a:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  .navbar-menu li a.active {
+    background: rgba(255,255,255,0.4);
+  }
+}

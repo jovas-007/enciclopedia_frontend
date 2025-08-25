@@ -1,0 +1,52 @@
+<aside class="sidenav" [class.open]="isSidenavOpen" id="sidenav">
+  <div class="sidenav-header">
+    <h3>Menú Principal</h3>
+    <button class="close-btn" aria-label="Cerrar menú" (click)="toggleSidenav()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+   <ul class="sidenav-menu">
+    <li>
+      <a [class.active]="currentPage === 'home'" (click)="showPage('home')">
+        <i class="fas fa-home"></i>
+        Inicio
+      </a>
+    </li>
+
+    <li>
+      <a [class.active]="currentPage === 'characters'" (click)="showPage('personajes')">
+        <i class="fas fa-users"></i>
+        Personajes
+      </a>
+    </li>
+
+    <li>
+      <a [class.active]="currentPage === 'transformations'" (click)="showPage('transformaciones')">
+        <i class="fas fa-bolt"></i>
+        Transformaciones
+      </a>
+    </li>
+
+    <li>
+      <a [class.active]="currentPage === 'sagas'" (click)="showPage('sagas')">
+        <i class="fas fa-book"></i>
+        Sagas
+      </a>
+    </li>
+
+    <li>
+      <a [class.active]="currentPage === 'episodes'" (click)="showPage('episodes')">
+        <i class="fas fa-tv"></i>
+        Episodios
+      </a>
+    </li>
+
+    <li>
+      <a [class.active]="currentPage === 'statistics'" (click)="showPage('statistics')">
+        <i class="fas fa-chart-bar"></i>
+        Estadísticas
+      </a>
+    </li>
+   </ul>
+</aside>
