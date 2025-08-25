@@ -36,7 +36,7 @@ import { PersonajeFormComponent } from './components/personaje-form.component';
 import { PersonajesLocalService } from './services/personajes-local.service';
 
 import { PersonajeFormDialogComponent } from './components/personaje-form-dialog.component';
-
+import { ConfirmDialogComponent } from './components/confirm-dialog.component';
 // Servicios
 @NgModule({
   declarations: [
@@ -52,7 +52,8 @@ import { PersonajeFormDialogComponent } from './components/personaje-form-dialog
     TransformacionesScreenComponent,
     SagasScreenComponent,
     PersonajeFormComponent,
-    PersonajeFormDialogComponent
+    PersonajeFormDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

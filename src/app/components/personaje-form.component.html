@@ -1,35 +1,102 @@
-<form [formGroup]="form" (ngSubmit)="guardar()" class="mb-4">
-  <div class="grid md:grid-cols-2 gap-4">
-    <label>Nombre<input class="input" formControlName="nombre"></label>
-    <label>Especie<input class="input" formControlName="especie"></label>
-    <label>Género<input class="input" formControlName="genero"></label>
-    <label>Afiliación<input class="input" formControlName="afiliacion"></label>
-    <label>Base Ki<input class="input" type="number" formControlName="base_ki"></label>
-    <label>Total Ki<input class="input" type="number" formControlName="total_ki"></label>
+<form [formGroup]="form" (ngSubmit)="guardar()" class="pf-grid">
+
+  <!-- Columna izquierda: datos -->
+  <div class="pf-left">
+
+    <div class="pf-row">
+      <mat-form-field appearance="outline" class="pf-field">
+        <mat-label>Nombre</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input matInput formControlName="nombre" />
+        <mat-error *ngIf="form.controls.nombre.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="pf-field">
+        <mat-label>Especie</mat-label>
+        <mat-icon matPrefix>pets</mat-icon>
+        <input matInput formControlName="especie" />
+        <mat-error *ngIf="form.controls.especie.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="pf-row">
+      <mat-form-field appearance="outline" class="pf-field">
+        <mat-label>Género</mat-label>
+        <mat-icon matPrefix>badge</mat-icon>
+        <input matInput formControlName="genero" />
+        <mat-error *ngIf="form.controls.genero.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="pf-field">
+        <mat-label>Afiliación</mat-label>
+        <mat-icon matPrefix>groups</mat-icon>
+        <input matInput formControlName="afiliacion" />
+        <mat-error *ngIf="form.controls.afiliacion.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="pf-row">
+      <mat-form-field appearance="outline" class="pf-field">
+        <mat-label>Base Ki</mat-label>
+        <mat-icon matPrefix>flash_on</mat-icon>
+        <input matInput type="number" min="0" step="1" formControlName="base_ki" />
+        <mat-hint>Valor base de poder</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="pf-field">
+        <mat-label>Total Ki</mat-label>
+        <mat-icon matPrefix>bolt</mat-icon>
+        <input matInput type="number" min="0" step="1" formControlName="total_ki" />
+        <mat-hint>Máximo registrado</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="pf-field pf-full">
+      <mat-label>Descripción</mat-label>
+      <mat-icon matPrefix>description</mat-icon>
+      <textarea matInput rows="3" formControlName="descripcion"
+                placeholder="Detalles relevantes del personaje"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="pf-field pf-full">
+      <mat-label>Imagen por URL</mat-label>
+      <mat-icon matPrefix>link</mat-icon>
+      <input matInput formControlName="imagen_url" placeholder="https://placehold.co/600x800?text=Goku" />
+      <mat-hint>Si subes archivo, este campo es opcional</mat-hint>
+    </mat-form-field>
+
+    <div class="pf-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid" class="pill-btn">
+        {{ personaje ? 'Actualizar' : 'Crear' }}
+      </button>
+      <button mat-stroked-button type="button" (click)="cancelado.emit()">Cancelar</button>
+    </div>
   </div>
 
-  <label class="block mt-3">Descripción
-    <textarea class="input w-full" rows="3" formControlName="descripcion"></textarea>
-  </label>
+  <!-- Columna derecha: archivo + preview -->
+  <div class="pf-right">
+    <div class="pf-upload card">
+      <div class="upload-row">
+        <button mat-stroked-button type="button" (click)="fileInput.click()">
+          <mat-icon>upload</mat-icon>
+          Subir imagen
+        </button>
+        <input #fileInput type="file" accept="image/*" (change)="seleccionarArchivo($event)" hidden />
+        <button *ngIf="file" mat-button color="warn" type="button" (click)="quitarArchivo()">Quitar archivo</button>
+      </div>
+      <small class="muted">Formatos: JPG, PNG. Tamaño recomendado ~600×800</small>
+    </div>
 
-  <div class="grid md:grid-cols-2 gap-4 mt-3">
-    <label>Imagen (archivo)
-      <input type="file" (change)="seleccionarArchivo($event)" accept="image/*" class="input">
-    </label>
-    <label>Imagen por URL
-      <input class="input" formControlName="imagen_url" placeholder="https://placehold.co/600x800?text=Goku">
-    </label>
+    <div class="pf-preview card" *ngIf="preview; else noPreview">
+      <img [src]="preview" alt="Previsualización" />
+    </div>
+
+    <ng-template #noPreview>
+      <div class="pf-preview card empty">
+        <mat-icon>image</mat-icon>
+        <span>Sin previsualización</span>
+      </div>
+    </ng-template>
   </div>
 
-  <div *ngIf="preview" class="mt-2">
-    <img [src]="preview" alt="previsualización" style="max-height:200px;border-radius:8px;">
-    <button type="button" (click)="quitarArchivo()">Quitar archivo</button>
-  </div>
-
-  <div class="mt-4">
-    <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid">
-      {{ personaje ? 'Actualizar' : 'Crear' }}
-    </button>
-    <button mat-button type="button" (click)="cancelado.emit()">Cancelar</button>
-  </div>
 </form>

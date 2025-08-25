@@ -1,0 +1,8 @@
+.cd-title {
+  display: flex; align-items: center; gap: 8px; font-weight: 700;
+}
+.cd-icon { color: #f59e0b; }          /* amber */
+.cd-icon.warn { color: #ef4444; }     /* red-500 */
+.cd-content { padding-top: 4px; }
+.cd-message { margin: 0; color: #374151; }
+.cd-actions { padding-top: 8px; }

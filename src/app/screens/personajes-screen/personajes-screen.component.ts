@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { PersonajesLocalService, Personaje } from '../../services/personajes-local.service';
 import { PersonajeFormDialogComponent } from '../../components/personaje-form-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../../components/confirm-dialog.component';
 
 @Component({
   selector: 'app-personajes-screen',
@@ -119,8 +120,24 @@ export class PersonajesScreenComponent implements OnInit, OnDestroy {
     });
   }
 
-  eliminar(id: number): void {
-    if (!confirm('¿Eliminar este personaje?')) return;
+ eliminar(id: number, nombre?: string): void {
+  const ref = this.dialog.open<ConfirmDialogComponent, ConfirmDialogData, boolean>(
+    ConfirmDialogComponent,
+    {
+      width: '420px',
+      maxWidth: '95vw',
+      data: {
+        title: 'Eliminar personaje',
+        message: `Se eliminará “${nombre ?? 'este personaje'}”. Esta acción no se puede deshacer.`,
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+        warn: true
+      }
+    }
+  );
+
+  ref.afterClosed().subscribe((ok: boolean | undefined) => {
+    if (!ok) return;
     this.svc.delete(id).subscribe({
       next: () => this.cargarPersonajes(),
       error: (e) => {
@@ -128,7 +145,9 @@ export class PersonajesScreenComponent implements OnInit, OnDestroy {
         alert('Error al eliminar');
       }
     });
-  }
+  });
+}
+
 
   // ======= utilidades UI =======
   imagenDe(p: Personaje): string | null {
