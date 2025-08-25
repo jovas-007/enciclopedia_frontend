@@ -3,9 +3,14 @@
     "target": "https://dragonball-api.com",
     "secure": true,
     "changeOrigin": true,
-    "pathRewrite": {
-      "^/api": "/api"
-    },
+    "pathRewrite": { "^/api": "/api" },
+    "logLevel": "debug"
+  },
+  "/backend": {
+    "target": "http://127.0.0.1:8000",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/backend": "" },
     "logLevel": "debug"
   }
 }

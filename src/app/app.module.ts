@@ -23,6 +23,7 @@ import { MatIconModule }      from '@angular/material/icon';
 import { MatButtonModule }    from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
 
 //Para el paginator
 import { MatPaginatorIntl } from '@angular/material/paginator';
@@ -30,6 +31,13 @@ import { getSpanishPaginatorIntl } from './shared/spanish-paginator-intl';
 import { TransformacionesScreenComponent } from './screens/transformaciones-screen/transformaciones-screen.component';
 import { SagasScreenComponent } from './screens/sagas-screen/sagas-screen.component';
 
+// Componentes para los formularios de personajes
+import { PersonajeFormComponent } from './components/personaje-form.component';
+import { PersonajesLocalService } from './services/personajes-local.service';
+
+import { PersonajeFormDialogComponent } from './components/personaje-form-dialog.component';
+
+// Servicios
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +50,9 @@ import { SagasScreenComponent } from './screens/sagas-screen/sagas-screen.compon
     LoadingSpinnerComponent,
     PersonajesScreenComponent,
     TransformacionesScreenComponent,
-    SagasScreenComponent
+    SagasScreenComponent,
+    PersonajeFormComponent,
+    PersonajeFormDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,9 +67,15 @@ import { SagasScreenComponent } from './screens/sagas-screen/sagas-screen.compon
     MatIconModule,
     MatButtonModule,
     MatPaginatorModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule,
   ],
   providers: [
+    PersonajesLocalService,
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
   ],
   bootstrap: [AppComponent]

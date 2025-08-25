@@ -264,7 +264,7 @@ app-page-header {
 
   &.collapsed {
     /* Estándar (soporte en evolución) */
-    display: box;
+    display: flex;
     box-orient: vertical;
     line-clamp: 1;
 
@@ -352,4 +352,63 @@ app-page-header {
   .character-image {
     height: 360px;
   }
+}
+/* Layout base de la barra */
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Select a la izquierda, botón a la derecha */
+  gap: 16px;
+  flex-wrap: wrap; /* En móvil se apilan */
+}
+
+.orden-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar-label {
+  font-weight: 600;
+  color: #6b7280; /* gris 500 */
+}
+
+/* Tamaño consistente del select */
+.orden-mat-field {
+  width: 220px;
+  margin: 0;
+}
+
+/* Botón “pastilla” con el mismo look que el select redondeado */
+.pill-btn {
+  border-radius: 9999px;
+  padding: 10px 18px;
+  line-height: 1;
+  font-weight: 600;
+  color: #fff !important;
+  /* Gradiente similar al header / select “pastilla” */
+  background: linear-gradient(90deg, #f59e0b 0%, #3b82f6 100%); /* amber→blue */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.pill-btn:hover {
+  filter: brightness(0.96);
+}
+
+.pill-btn:active {
+  transform: translateY(1px);
+}
+
+/* Si usas mat-icon dentro del botón */
+.pill-btn .mat-icon {
+  margin-right: 6px;
+}
+
+/* Por si existían estilos viejos que lo movían: anula posiciones absolutas */
+.acciones-toolbar { position: static !important; margin: 0 !important; }
+
+/* Responsive: reduce el ancho del select en pantallas pequeñas */
+@media (max-width: 768px) {
+  .orden-mat-field { width: 180px; }
 }

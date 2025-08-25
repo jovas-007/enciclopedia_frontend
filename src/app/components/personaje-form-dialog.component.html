@@ -1,0 +1,11 @@
+<h2 mat-dialog-title class="dialog-title">
+  {{ data.personaje ? 'Editar personaje' : 'Agregar personaje' }}
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <app-personaje-form
+    [personaje]="data.personaje"
+    (guardado)="onGuardado($event)"
+    (cancelado)="onCancel()">
+  </app-personaje-form>
+</mat-dialog-content>

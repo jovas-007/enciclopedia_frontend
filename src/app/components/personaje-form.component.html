@@ -1,0 +1,35 @@
+<form [formGroup]="form" (ngSubmit)="guardar()" class="mb-4">
+  <div class="grid md:grid-cols-2 gap-4">
+    <label>Nombre<input class="input" formControlName="nombre"></label>
+    <label>Especie<input class="input" formControlName="especie"></label>
+    <label>Género<input class="input" formControlName="genero"></label>
+    <label>Afiliación<input class="input" formControlName="afiliacion"></label>
+    <label>Base Ki<input class="input" type="number" formControlName="base_ki"></label>
+    <label>Total Ki<input class="input" type="number" formControlName="total_ki"></label>
+  </div>
+
+  <label class="block mt-3">Descripción
+    <textarea class="input w-full" rows="3" formControlName="descripcion"></textarea>
+  </label>
+
+  <div class="grid md:grid-cols-2 gap-4 mt-3">
+    <label>Imagen (archivo)
+      <input type="file" (change)="seleccionarArchivo($event)" accept="image/*" class="input">
+    </label>
+    <label>Imagen por URL
+      <input class="input" formControlName="imagen_url" placeholder="https://placehold.co/600x800?text=Goku">
+    </label>
+  </div>
+
+  <div *ngIf="preview" class="mt-2">
+    <img [src]="preview" alt="previsualización" style="max-height:200px;border-radius:8px;">
+    <button type="button" (click)="quitarArchivo()">Quitar archivo</button>
+  </div>
+
+  <div class="mt-4">
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid">
+      {{ personaje ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button mat-button type="button" (click)="cancelado.emit()">Cancelar</button>
+  </div>
+</form>

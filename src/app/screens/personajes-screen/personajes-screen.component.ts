@@ -1,164 +1,156 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
-import { PersonajesService, Personaje } from '../../services/personajes.service';
+import { MatDialog } from '@angular/material/dialog';
+
+import { PersonajesLocalService, Personaje } from '../../services/personajes-local.service';
+import { PersonajeFormDialogComponent } from '../../components/personaje-form-dialog.component';
 
 @Component({
   selector: 'app-personajes-screen',
   templateUrl: './personajes-screen.component.html',
   styleUrls: ['./personajes-screen.component.scss']
 })
-export class PersonajesScreenComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('ordenAnchor', { static: true }) ordenAnchor!: ElementRef<HTMLElement>;
+export class PersonajesScreenComponent implements OnInit, OnDestroy {
+  isLoading = true;
 
-  /** Ancho en px que usará el panel del mat-select */
-  panelWidth: string = '260px'; // valor inicial de cortesía
+  personajes: Personaje[] = [];
+  personajesPagina: Personaje[] = [];
 
-  ngAfterViewInit(): void {
-    this.syncPanelWidth();
-  }
+  // paginación
+  tamPagina = 12;
+  paginaActual = 0;
+  totalFiltrados = 0;
 
-  @HostListener('window:resize')
-  onResize(): void {
-    this.syncPanelWidth();
-  }
+  // ordenamiento
+  ordenActual: 'nombre_asc' | 'nombre_desc' | 'ki_asc' | 'ki_desc' = 'nombre_asc';
+  panelWidth = '220px';
 
-  private syncPanelWidth(): void {
-    if (!this.ordenAnchor) { return; }
-    const w = this.ordenAnchor.nativeElement.offsetWidth;
-    // Protegemos un mínimo para que no colapse
-    this.panelWidth = `${Math.max(w, 200)}px`;
-  }
+  // descripción expandida
+  private expandSet = new Set<number>();
 
-  // ========================Variables ========================
-  // Carga
-  public isLoading: boolean = true;
-
-  // Datos base (todos) y rebanada paginada
-  public personajes: Personaje[] = [];
-  public personajesPagina: Personaje[] = [];
-
-  // Paginación
-  public paginaActual: number = 0;   // índice 0-based
-  public tamPagina: number = 12;     // items por página
-  public totalFiltrados: number = 0; // total después de ordenar/filtrar (aquí no filtramos, sólo orden)
-
-  // Ordenamiento (coincide con el <select> del HTML)
-  public ordenActual: 'nombre_asc' | 'nombre_desc' | 'ki_asc' | 'ki_desc' = 'nombre_asc';
-
-  // Descripciones expandidas por id (para “mostrar más…”)
-  public descripcionesExpandidas: Record<number, boolean> = {};
-
-  // Subscripciones
-  private subDatos?: Subscription;
+  private sub?: Subscription;
 
   constructor(
-    private readonly personajesService: PersonajesService
+    private svc: PersonajesLocalService,
+    private dialog: MatDialog
   ) {}
 
-  // ========================
-  // Ciclo de vida
-  // ========================
-  public ngOnInit(): void {
-    this.subDatos = this.personajesService.obtenerPersonajes().subscribe({
-      next: (items: Personaje[]) => {
-        this.personajes = items ?? [];
-        // Inicializamos totales y primera “página”
+  ngOnInit(): void {
+    this.cargarPersonajes();
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
+  private mapOrdenToApi(v: string): string {
+    switch (v) {
+      case 'nombre_asc':  return 'nombre';
+      case 'nombre_desc': return '-nombre';
+      case 'ki_asc':      return 'base_ki';
+      case 'ki_desc':     return '-base_ki';
+      default:            return 'nombre';
+    }
+  }
+
+  cargarPersonajes(): void {
+    this.isLoading = true;
+    this.sub = this.svc.list({ ordering: this.mapOrdenToApi(this.ordenActual) }).subscribe({
+      next: (res) => {
+        this.personajes = res.results;
         this.totalFiltrados = this.personajes.length;
-        this.aplicarOrden();   // ordena según ordenActual
-        this.recalcularPagina();
+        this.paginaActual = 0;
+        this.calcularPagina();
         this.isLoading = false;
       },
-      error: () => {
+      error: (err) => {
+        console.error('API personajes ERROR:', err);
         this.personajes = [];
+        this.personajesPagina = [];
         this.totalFiltrados = 0;
-        this.recalcularPagina();
         this.isLoading = false;
       }
     });
   }
 
-  public ngOnDestroy(): void {
-    this.subDatos?.unsubscribe();
+  calcularPagina(): void {
+    const ini = this.paginaActual * this.tamPagina;
+    const fin = ini + this.tamPagina;
+    this.personajesPagina = this.personajes.slice(ini, fin);
   }
 
-  // ========================
-  // Ordenamiento
-  // ========================
-  public onOrdenChange(valor: string): void {
-    // Aseguramos tipo
-    const val = valor as typeof this.ordenActual;
-    this.ordenActual = val;
-    this.aplicarOrden();
-    // Al cambiar orden, volvemos a primera página
-    this.paginaActual = 0;
-    this.recalcularPagina();
+  onPageChange(ev: PageEvent): void {
+    this.tamPagina = ev.pageSize;
+    this.paginaActual = ev.pageIndex;
+    this.calcularPagina();
   }
 
-  private aplicarOrden(): void {
-    const lista = [...this.personajes];
-
-    const parseKi = (ki: string): number => {
-      // Extrae un número “base” de la cadena (ej. "60.000.000" -> 60000000)
-      // Nota: es un parse simple para ordenar de forma aproximada
-      const limpio = (ki || '').toString().replace(/[^\d.]/g, '');
-      const n = Number(limpio);
-      return isNaN(n) ? -Infinity : n;
-    };
-
-    switch (this.ordenActual) {
-      case 'nombre_asc':
-        lista.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'nombre_desc':
-        lista.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      case 'ki_asc':
-        lista.sort((a, b) => parseKi(a.ki) - parseKi(b.ki));
-        break;
-      case 'ki_desc':
-        lista.sort((a, b) => parseKi(b.ki) - parseKi(a.ki));
-        break;
-    }
-
-    this.personajes = lista;
-    this.totalFiltrados = this.personajes.length;
+  onOrdenChange(value: 'nombre_asc' | 'nombre_desc' | 'ki_asc' | 'ki_desc') {
+    this.ordenActual = value;
+    this.cargarPersonajes();
   }
 
-  // ========================
-  // Paginación (cliente)
-  // ========================
-  public onPageChange(e: PageEvent): void {
-    this.paginaActual = e.pageIndex;
-    this.tamPagina    = e.pageSize;
-    this.recalcularPagina();
+  // ======= DIÁLOGOS =======
+  agregar(): void {
+    const ref = this.dialog.open(PersonajeFormDialogComponent, {
+      width: '720px',
+      maxWidth: '95vw',
+      disableClose: true,
+      data: { personaje: null }
+    });
+
+    // afterClosed puede devolver Personaje | null | undefined
+    ref.afterClosed().subscribe((res: Personaje | null | undefined) => {
+      if (res) this.cargarPersonajes();
+    });
   }
 
-  private recalcularPagina(): void {
-    const inicio = this.paginaActual * this.tamPagina;
-    const fin    = inicio + this.tamPagina;
-    this.personajesPagina = this.personajes.slice(inicio, fin);
+  editar(p: Personaje): void {
+    const ref = this.dialog.open(PersonajeFormDialogComponent, {
+      width: '720px',
+      maxWidth: '95vw',
+      disableClose: true,
+      data: { personaje: p }
+    });
+
+    ref.afterClosed().subscribe((res: Personaje | null | undefined) => {
+      if (res) this.cargarPersonajes();
+    });
   }
 
-  // ========================
-  // Colapsar/Expandir descripción
-  // ========================
-  public toggleDescripcion(id: number): void {
-    this.descripcionesExpandidas[id] = !this.descripcionesExpandidas[id];
+  eliminar(id: number): void {
+    if (!confirm('¿Eliminar este personaje?')) return;
+    this.svc.delete(id).subscribe({
+      next: () => this.cargarPersonajes(),
+      error: (e) => {
+        console.error(e);
+        alert('Error al eliminar');
+      }
+    });
   }
 
-  public isExpanded(id: number): boolean {
-    return !!this.descripcionesExpandidas[id];
+  // ======= utilidades UI =======
+  imagenDe(p: Personaje): string | null {
+    return p.imagen_src || p.imagen_url || null;
   }
 
-  // ========================
-  // Utilidades de template
-  // ========================
-  public trackById(_index: number, item: Personaje): number {
-    return item.id;
+  trackById(index: number, item: Personaje): number {
+    return item.id ?? index;
   }
 
-  public onImgError(ev: Event): void {
-    (ev.target as HTMLImageElement).src = 'assets/placeholder-dbz.png';
+  onImgError(ev: Event) {
+    const img = ev.target as HTMLImageElement;
+    img.src = 'assets/placeholder-dbz.png';
+    img.onerror = null;
+  }
+
+  isExpanded(id: number): boolean {
+    return this.expandSet.has(id);
+  }
+
+  toggleDescripcion(id: number): void {
+    if (this.expandSet.has(id)) this.expandSet.delete(id);
+    else this.expandSet.add(id);
   }
 }
