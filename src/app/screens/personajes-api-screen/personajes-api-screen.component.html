@@ -13,26 +13,30 @@
     </app-page-header>
 
     <!-- Barra superior: ordenamiento (opcional) -->
-    <section class="toolbar" aria-label="Controles de listado" *ngIf="!isLoading">
-      <div class="toolbar">
-        <label class="toolbar-label" for="ordenSelectMat">Ordenar por:</label>
+<!-- Barra superior -->
+<section class="toolbar" aria-label="Controles de listado" *ngIf="!isLoading">
+  <div class="toolbar-row">
+    <div class="orden-wrapper">
+      <label class="toolbar-label" for="ordenSelectMat">Ordenar por:</label>
 
-        <mat-form-field appearance="outline" class="orden-mat-field" #ordenAnchor>
-          <mat-select
-            id="ordenSelectMat"
-            [value]="ordenActual"
-            (selectionChange)="onOrdenChange($event.value)"
-            panelClass="orden-panel"
-            [panelWidth]="panelWidth"
-            aria-label="Ordenar por">
-            <mat-option value="nombre_asc">Nombre (A–Z)</mat-option>
-            <mat-option value="nombre_desc">Nombre (Z–A)</mat-option>
-            <mat-option value="ki_asc">Base KI (Asc.)</mat-option>
-            <mat-option value="ki_desc">Base KI (Desc.)</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </section>
+      <mat-form-field appearance="outline" class="orden-mat-field" #ordenAnchor>
+        <mat-select
+          id="ordenSelectMat"
+          [value]="ordenActual"
+          (selectionChange)="onOrdenChange($event.value)"
+          panelClass="orden-panel"
+          [panelWidth]="panelWidth"
+          aria-label="Ordenar por">
+          <mat-option value="nombre_asc">Nombre (A–Z)</mat-option>
+          <mat-option value="nombre_desc">Nombre (Z–A)</mat-option>
+          <mat-option value="ki_asc">Base KI (Asc.)</mat-option>
+          <mat-option value="ki_desc">Base KI (Desc.)</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</section>
+
 
     <!-- Estado vacío (cuando termina de cargar y no hay resultados) -->
     <div class="empty-state" *ngIf="!isLoading && (!personajes || personajes.length === 0)">
