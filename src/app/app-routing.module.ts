@@ -5,6 +5,7 @@ import { LoginScreenComponent } from './screens/login-screen/login-screen.compon
 import { PersonajesScreenComponent } from './screens/personajes-screen/personajes-screen.component';
 import { TransformacionesScreenComponent } from './screens/transformaciones-screen/transformaciones-screen.component';
 import { SagasScreenComponent } from './screens/sagas-screen/sagas-screen.component';
+import { PersonajesApiScreenComponent } from './screens/personajes-api-screen/personajes-api-screen.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: 'full'},
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: "personajes", component: PersonajesScreenComponent, pathMatch: 'full'},
   { path: "transformaciones", component: TransformacionesScreenComponent, pathMatch: 'full'},
   { path: "sagas", component: SagasScreenComponent, pathMatch: 'full'},
+  { path: "personajes-api", component: PersonajesApiScreenComponent, pathMatch: 'full'},
 ];
 
 @NgModule({

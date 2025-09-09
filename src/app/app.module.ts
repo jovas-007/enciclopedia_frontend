@@ -30,13 +30,21 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getSpanishPaginatorIntl } from './shared/spanish-paginator-intl';
 import { TransformacionesScreenComponent } from './screens/transformaciones-screen/transformaciones-screen.component';
 import { SagasScreenComponent } from './screens/sagas-screen/sagas-screen.component';
+import { PersonajesApiScreenComponent } from './screens/personajes-api-screen/personajes-api-screen.component';
 
 // Componentes para los formularios de personajes
 import { PersonajeFormComponent } from './components/personaje-form.component';
 import { PersonajesLocalService } from './services/personajes-local.service';
+import { PersonajesService } from './services/personajes.service';
 
 import { PersonajeFormDialogComponent } from './components/personaje-form-dialog.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog.component';
+// +++ imports Material (si faltan)
+import { MatMenuModule } from '@angular/material/menu';
+
+//mat menu componente importar
+
+
 // Servicios
 @NgModule({
   declarations: [
@@ -53,7 +61,10 @@ import { ConfirmDialogComponent } from './components/confirm-dialog.component';
     SagasScreenComponent,
     PersonajeFormComponent,
     PersonajeFormDialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    PersonajesApiScreenComponent,
+  
+    
   ],
   imports: [
     BrowserModule,
@@ -77,6 +88,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog.component';
   ],
   providers: [
     PersonajesLocalService,
+    PersonajesService,
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
   ],
   bootstrap: [AppComponent]

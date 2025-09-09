@@ -57,6 +57,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.sidenavService.toggle();
   }
 
+  /** Abre el panel de administración en una nueva pestaña */
+public irAdmin(): void {
+  window.open('/backend/admin/', '_blank');
+}
+
   /**
    * Navega a la ruta indicada y marca el enlace activo
    * (no cierra el sidenav aquí, lo manejará el propio componente sidenav en mobile)

@@ -19,16 +19,9 @@
       <li><a (click)="showPage('transformaciones')">Transformaciones</a></li>
       <li><a (click)="showPage('sagas')">Sagas</a></li>
       <li><a (click)="showPage('estadisticas')">Estadísticas</a></li>
+      <li><a (click)="showPage('personajes-api')">Personajes API</a></li>
     </ul>
 
-    <div class="user-section">
-      <span id="userGreeting">{{ currentUser?.name || 'Invitado' }}</span>
-      <div class="user-avatar" id="userAvatar">
-        {{ currentUser ? (currentUser.name.charAt(0)) : 'G' }}
-      </div>
-      <button class="btn btn-secondary" (click)="toggleAuth()" id="authBtn">
-        {{ currentUser ? 'Logout' : 'Login' }}
-      </button>
-    </div>
+    
   </nav>
 </header>
