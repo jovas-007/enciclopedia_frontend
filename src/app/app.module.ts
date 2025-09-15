@@ -1,3 +1,4 @@
+// app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,37 +16,43 @@ import { LoadingSpinnerComponent } from './partials/loading-spinner/loading-spin
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PersonajesScreenComponent } from './screens/personajes-screen/personajes-screen.component';
 
-//Angular material
+// Angular Material (importa cada módulo una sola vez)
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule }     from '@angular/material/input';
 import { MatSelectModule }    from '@angular/material/select';
 import { MatIconModule }      from '@angular/material/icon';
 import { MatButtonModule }    from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatExpansionModule} from '@angular/material/expansion';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDialogModule }    from '@angular/material/dialog';
+import { MatMenuModule }      from '@angular/material/menu';
 
-//Para el paginator
+// Paginador en español
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getSpanishPaginatorIntl } from './shared/spanish-paginator-intl';
+
 import { TransformacionesScreenComponent } from './screens/transformaciones-screen/transformaciones-screen.component';
 import { SagasScreenComponent } from './screens/sagas-screen/sagas-screen.component';
 import { PersonajesApiScreenComponent } from './screens/personajes-api-screen/personajes-api-screen.component';
 
-// Componentes para los formularios de personajes
+// Formularios de personajes y servicios
 import { PersonajeFormComponent } from './components/personaje-form.component';
+import { PersonajeFormDialogComponent } from './components/personaje-form-dialog.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog.component';
 import { PersonajesLocalService } from './services/personajes-local.service';
 import { PersonajesService } from './services/personajes.service';
 
-import { PersonajeFormDialogComponent } from './components/personaje-form-dialog.component';
-import { ConfirmDialogComponent } from './components/confirm-dialog.component';
-// +++ imports Material (si faltan)
-import { MatMenuModule } from '@angular/material/menu';
+// Nueva pantalla de estadísticas
+import { EstadisticasScreenComponent } from './screens/estadisticas-screen/estadisticas-screen.component';
 
-//mat menu componente importar
+// Importar NgChartsModule (sin provideCharts)
+import { NgChartsModule } from 'ng2-charts';
 
+// *** Registrar Chart.js al inicio ***
+import { Chart } from 'chart.js';
+import { registerables } from 'chart.js';
+Chart.register(...registerables);
 
-// Servicios
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,8 +70,7 @@ import { MatMenuModule } from '@angular/material/menu';
     PersonajeFormDialogComponent,
     ConfirmDialogComponent,
     PersonajesApiScreenComponent,
-  
-    
+    EstadisticasScreenComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +79,7 @@ import { MatMenuModule } from '@angular/material/menu';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    // Módulos de Angular Material (una sola vez cada uno)
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -81,10 +88,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatPaginatorModule,
     MatExpansionModule,
     MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
+    MatMenuModule,
+    NgChartsModule,
   ],
   providers: [
     PersonajesLocalService,
@@ -94,3 +99,4 @@ import { MatMenuModule } from '@angular/material/menu';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+// src/app/app.module.ts

@@ -50,7 +50,7 @@
                inputmode="numeric" pattern="^\d+$"
                formControlName="base_ki" />
         <mat-hint>Valor base de poder</mat-hint>
-        <mat-error *ngIf="form.controls.base_ki.hasError('required')">Requerido</mat-error>
+        <mat-error *ngIf="form.controls.base_ki.hasError('required')">Valor numerico requerido</mat-error>
         <mat-error *ngIf="form.controls.base_ki.hasError('min')">Debe ser ≥ 0</mat-error>
       </mat-form-field>
 
@@ -61,7 +61,7 @@
                inputmode="numeric" pattern="^\d+$"
                formControlName="total_ki" />
         <mat-hint>Máximo registrado</mat-hint>
-        <mat-error *ngIf="form.controls.total_ki.hasError('required')">Requerido</mat-error>
+        <mat-error *ngIf="form.controls.total_ki.hasError('required')">Valor numerico requerido</mat-error>
         <mat-error *ngIf="form.controls.total_ki.hasError('min')">Debe ser ≥ 0</mat-error>
       </mat-form-field>
     </div>
