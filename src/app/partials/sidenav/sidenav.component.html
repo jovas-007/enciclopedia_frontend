@@ -55,5 +55,11 @@
         Estadísticas
       </a>
     </li>
+    <li>
+    <a [class.active]="currentPage === 'statistics-api'" (click)="showPage('estadisticas-api')">
+      <i class="fas fa-chart-bar"></i>
+      Estadísticas API
+    </a>
+  </li>
    </ul>
 </aside>

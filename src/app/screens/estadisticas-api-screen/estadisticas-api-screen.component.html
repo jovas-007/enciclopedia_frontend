@@ -1,0 +1,45 @@
+<section class="estadisticas-api-screen"
+    aria-label="Estadísticas de personajes DBZ (API)">
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+    <app-navbar></app-navbar>
+    <app-sidenav></app-sidenav>
+
+    <main class="main-content" [class.hidden]="isLoading" role="main">
+        <app-page-header
+            [title]="'Estadísticas API'"
+            [subtitle]="'Gráficas de poder de ki agrupadas por afiliación y por BASE KI'">
+        </app-page-header>
+
+        <!-- Mensaje de vacío si no hay datos -->
+        <div class="empty-state"
+            *ngIf="!isLoading && afiliaciones.length === 0">
+            <p>No hay datos para mostrar.</p>
+        </div>
+
+        <!-- Sección de gráfico por cada afiliación -->
+        <ng-container *ngIf="!isLoading">
+            <section *ngFor="let af of afiliaciones" class="stats-section">
+                <header class="stats-header">
+                    <h3 class="stats-title">{{ af }}</h3>
+                </header>
+
+                <div class="chart-card">
+                    <div class="chart-body">
+                        <canvas
+                            baseChart
+                            class="chart-canvas"
+                            [data]="chartData[af]"
+                            [options]="chartOptionsByAf[af]"
+                            [type]="'bar'"
+                            [plugins]="[imageTickPlugin]"
+                            [height]="chartHeight">
+                        </canvas>
+                    </div>
+                </div>
+            </section>
+        </ng-container>
+    </main>
+
+    <app-footer></app-footer>
+</section>

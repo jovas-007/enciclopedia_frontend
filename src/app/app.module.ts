@@ -51,6 +51,7 @@ import { NgChartsModule } from 'ng2-charts';
 // *** Registrar Chart.js al inicio ***
 import { Chart } from 'chart.js';
 import { registerables } from 'chart.js';
+import { EstadisticasApiScreenComponent } from './screens/estadisticas-api-screen/estadisticas-api-screen.component';
 Chart.register(...registerables);
 
 @NgModule({
@@ -71,6 +72,7 @@ Chart.register(...registerables);
     ConfirmDialogComponent,
     PersonajesApiScreenComponent,
     EstadisticasScreenComponent,
+    EstadisticasApiScreenComponent,
   ],
   imports: [
     BrowserModule,
