@@ -26,6 +26,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule }    from '@angular/material/dialog';
 import { MatMenuModule }      from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 // Paginador en español
 import { MatPaginatorIntl } from '@angular/material/paginator';
@@ -52,6 +54,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { Chart } from 'chart.js';
 import { registerables } from 'chart.js';
 import { EstadisticasApiScreenComponent } from './screens/estadisticas-api-screen/estadisticas-api-screen.component';
+import { EpisodiosScreenComponent } from './screens/episodios-screen/episodios-screen.component';
 Chart.register(...registerables);
 
 @NgModule({
@@ -73,6 +76,7 @@ Chart.register(...registerables);
     PersonajesApiScreenComponent,
     EstadisticasScreenComponent,
     EstadisticasApiScreenComponent,
+    EpisodiosScreenComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,6 +96,7 @@ Chart.register(...registerables);
     MatDialogModule,
     MatMenuModule,
     NgChartsModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     PersonajesLocalService,

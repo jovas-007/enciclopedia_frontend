@@ -1,0 +1,143 @@
+<!-- episodios-screen.component.html -->
+<section class="episodios-screen" aria-label="Episodios por saga">
+  <!-- Cargando: Muestra el spinner mientras se cargan los episodios -->
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <!-- Shell común -->
+  <app-navbar></app-navbar>
+  <app-sidenav></app-sidenav>
+
+  <main class="main-content" [class.hidden]="isLoading" role="main">
+    <!-- Encabezado: Título de la página -->
+    <app-page-header [title]="'Episodios'" [subtitle]="'Explora los episodios de las sagas de Dragon Ball'">
+    </app-page-header>
+
+    <!-- Toolbar: Buscar y Ordenar (con Material Design) -->
+    <div class="toolbar" role="region" aria-label="Herramientas de búsqueda y orden" *ngIf="!isLoading">
+      <div class="toolbar-row">
+
+        <!-- Grupo: Buscar -->
+        <div class="field-group">
+          <label class="toolbar-label" for="buscarEpisodiosMat">Buscar:</label>
+          <mat-form-field appearance="outline" class="pill-field search-mat-field">
+            <mat-icon class="search-prefix" matPrefix>search</mat-icon>
+            <input matInput id="buscarEpisodiosMat" type="search" [value]="query" (input)="onSearch($event)"
+              placeholder="Buscar episodio…" aria-label="Buscar episodio por nombre o saga" />
+          </mat-form-field>
+        </div>
+
+        <span class="spacer"></span>
+
+        <!-- Grupo: Ordenar -->
+        <div class="field-group">
+          <label class="toolbar-label" for="ordenEpisodiosMat">Ordenar por:</label>
+          <mat-form-field appearance="outline" class="pill-field orden-mat-field" #ordenAnchor>
+            <mat-select id="ordenEpisodiosMat" [value]="ordenActual" (selectionChange)="onOrdenChange($event.value)"
+              panelClass="orden-panel" aria-label="Ordenar episodios por">
+              <mat-option value="natural">Orden cronológico</mat-option>
+              <mat-option value="az">Nombre (A–Z)</mat-option>
+              <mat-option value="za">Nombre (Z–A)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Estado vacío: Si no hay resultados que coincidan con la búsqueda -->
+    <div class="empty-state" *ngIf="!isLoading && (!sagas || sagas.length === 0)">
+      <p>No se encontraron resultados que coincidan con la búsqueda.</p>
+    </div>
+
+    <!-- Acordeón por SAGA -->
+    <mat-accordion *ngIf="!isLoading && sagas && sagas.length" class="sagas-list" multi displayMode="flat"
+      aria-label="Listado de sagas para explorar sus episodios">
+
+      <mat-expansion-panel *ngFor="let s of sagas; trackBy: trackBySagaId" class="saga-panel"
+        (opened)="onSagaOpened(s)">
+
+        <mat-expansion-panel-header>
+          <mat-panel-title class="header-inline">
+            <span class="header-title">{{ s.name }}</span> <!-- Mostramos el nombre de la saga -->
+
+            <span class="series-chip" [ngClass]="{
+                    'series--DB': s.series === 'Dragon Ball',
+                    'series--DBZ': s.series === 'Dragon Ball Z',
+                    'series--GT': s.series === 'Dragon Ball GT',
+                    'series--DBS': s.series === 'Dragon Ball Super'
+                  }" *ngIf="s.series">{{ s.series }}</span> <!-- Mostramos la serie si está disponible -->
+
+            <span class="ep-range">Episodios {{ s.episodeStart }}–{{ s.episodeEnd }}</span> <!-- Rango de episodios -->
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <!-- Body: Lista de episodios -->
+        <div class="panel-body">
+          <h4 class="ep-title">Episodios</h4>
+
+          <!-- Loader perezoso por saga -->
+          <div class="ep-loader" *ngIf="loadingEpisodios?.[s.name]">
+            <!-- Usamos `s.name` aquí para identificar la saga -->
+            <mat-progress-spinner diameter="28" mode="indeterminate"></mat-progress-spinner>
+            <span>Cargando episodios…</span>
+          </div>
+
+          <!-- Lista de episodios -->
+          <ul class="ep-list"
+            *ngIf="!loadingEpisodios?.[s.name] && (episodiosPorSaga?.[s.name] || []).length; else noEpisodes">
+            <li class="ep-item" *ngFor="let ep of episodiosPorSaga[s.name]; trackBy: trackByEp">
+
+              <!-- Verificar si el episodio tiene una URL válida (ep.url) -->
+              <!-- Usamos directamente `ep.url` si está disponible -->
+              <a *ngIf="ep.url; else showProximamente" class="ep-link" [href]="ep.url"
+                target="_blank"
+                rel="noopener"
+                [attr.aria-label]="'Ver episodio ' + ep.nombre">
+                <!-- Icono de estrella comentado usar mejor la esfera del dragón -->
+                <!-- <mat-icon class="ep-bullet" aria-hidden="true">grade</mat-icon> -->
+                <!-- Usamos la imagen de la esfera del dragón -->
+                <img src="assets/img/dragon-ball-sphere.png" alt="Esfera del dragón" class="ep-icon" />
+                <span class="ep-text">
+                  <span class="ep-num">#{{ ep.numero }}</span> <!-- Número del episodio -->
+                  <span class="ep-name">{{ ep.nombre }}</span> <!-- Nombre del episodio -->
+                </span>
+              </a>
+
+              <!-- Si no tiene URL, mostrar el mensaje "Próximamente" -->
+              <ng-template #showProximamente>
+                <span class="ep-link is-disabled" aria-disabled="true">
+                  <mat-icon class="ep-bullet" aria-hidden="true">grade</mat-icon>
+                  <span class="ep-text">
+                    <span class="ep-num">#{{ ep.numero }}</span>
+                    <span class="ep-name">{{ ep.nombre }}</span>
+                    <span class="ep-tag ep-tag--pending">Próximamente</span> <!-- Mostrar "Próximamente" -->
+                  </span>
+                </span>
+              </ng-template>
+
+            </li>
+          </ul>
+
+          <!-- Sin episodios: Si no hay episodios disponibles para esta saga -->
+          <ng-template #noEpisodes>
+            <p class="ep-empty">No se encontraron episodios para esta saga.</p>
+          </ng-template>
+
+
+          <!-- Sin episodios: Si no hay episodios disponibles para esta saga -->
+          <ng-template #noEpisodes>
+            <p class="ep-empty">No se encontraron episodios para esta saga.</p>
+          </ng-template>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <!-- Paginación (sobre el listado de sagas mostrado) -->
+    <mat-paginator *ngIf="!isLoading && totalItems > pageSize" [length]="totalItems" [pageIndex]="pageIndex"
+      [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"
+      aria-label="Paginación de sagas">
+    </mat-paginator>
+  </main>
+
+  <app-footer></app-footer>
+</section>

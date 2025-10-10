@@ -30,7 +30,7 @@ export class SagasService {
   /** Catálogo local ampliado (DB, DBZ, GT, Super) */
   private readonly SAGAS: Saga[] = [
     /* =======================
-       DRAGON BALL (Gokū niño)
+       DRAGON BALL (Goku niño)
        Serie: 153 episodios
        ======================= */
     {
@@ -39,7 +39,7 @@ export class SagasService {
       name: 'Emperador Pilaf',
       episodeStart: 1,
       episodeEnd: 13,
-      summary: 'Inicio del viaje de Gokū y Bulma para reunir las esferas del dragón; primer antagonista: Pilaf.',
+      summary: 'Inicio del viaje de Goku y Bulma para reunir las esferas del dragón; primer antagonista: Pilaf.',
       season: 1,
       year: 1986,
       arcs: [
@@ -51,20 +51,20 @@ export class SagasService {
     {
       id: 102,
       series: 'Dragon Ball',
-      name: '21.º Tenkaichi Budōkai',
+      name: '21° Torneo de Artes Marciales',
       episodeStart: 14,
       episodeEnd: 28,
-      summary: 'Gokū y Krilin entrenan con el Maestro Roshi y participan en su primer torneo mundial.',
+      summary: 'Goku y Krilin entrenan con el Maestro Roshi y participan en su primer torneo mundial.',
       season: 1,
       year: 1986
     },
     {
       id: 103,
       series: 'Dragon Ball',
-      name: 'Ejército Red Ribbon',
+      name: 'Ejército Patrulla Roja',
       episodeStart: 29,
       episodeEnd: 68,
-      summary: 'Gokū enfrenta a la Red Ribbon en la búsqueda de las esferas; introduce a personajes como el General Blue.',
+      summary: 'Goku enfrenta a la Patrulla Roja en la búsqueda de las esferas; introduce a personajes como el General Blue.',
       season: 2,
       year: 1986,
       arcs: [
@@ -77,7 +77,7 @@ export class SagasService {
     {
       id: 104,
       series: 'Dragon Ball',
-      name: '22.º Tenkaichi Budōkai',
+      name: '22° Torneo de Artes Marciales',
       episodeStart: 69,
       episodeEnd: 83,
       summary: 'Segundo torneo mundial, destacando la rivalidad con el dojo de Tsuru (Ten Shin Han y Chaoz).',
@@ -87,20 +87,20 @@ export class SagasService {
     {
       id: 105,
       series: 'Dragon Ball',
-      name: 'Piccolo Daimaō',
+      name: 'Piccolo Daimaku',
       episodeStart: 84,
       episodeEnd: 122,
-      summary: 'Resurrección de Piccolo Daimaō y batalla por salvar el mundo.',
+      summary: 'Resurrección de Piccolo Daimaku y batalla por salvar el mundo.',
       season: 3,
       year: 1988
     },
     {
       id: 106,
       series: 'Dragon Ball',
-      name: '23.º Tenkaichi Budōkai',
+      name: '23° Torneo de Artes Marciales',
       episodeStart: 123,
       episodeEnd: 153,
-      summary: 'Tercer torneo: Gokū vs. Piccolo Jr.; cierre de la etapa infantil y puente hacia DBZ.',
+      summary: 'Tercer torneo: Goku vs. Piccolo Jr.; cierre de la etapa infantil y puente hacia DBZ.',
       season: 3,
       year: 1989
     },
@@ -111,7 +111,7 @@ export class SagasService {
     {
       id: 1,
       series: 'Dragon Ball Z',
-      name: 'Saga Saiyan',
+      name: 'Saga Saiyajin',
       episodeStart: 1,
       episodeEnd: 35,
       summary: 'Llegada de Raditz, Nappa y Vegeta; formación de los Guerreros Z.',
@@ -126,7 +126,7 @@ export class SagasService {
     {
       id: 2,
       series: 'Dragon Ball Z',
-      name: 'Saga Namek/Freezer',
+      name: 'Saga de Freezer',
       episodeStart: 36,
       episodeEnd: 107,
       summary: 'Viaje a Namek; combate contra las Fuerzas Ginyū y Freezer.',
@@ -141,7 +141,7 @@ export class SagasService {
     {
       id: 3,
       series: 'Dragon Ball Z',
-      name: 'Garlic Jr. (relleno)',
+      name: 'Garlic Jr.',
       episodeStart: 108,
       episodeEnd: 117,
       summary: 'Retorno de Garlic Jr. y la Niebla del Agua Negra.',
@@ -225,10 +225,10 @@ export class SagasService {
     {
       id: 201,
       series: 'Dragon Ball GT',
-      name: 'Esferas del Dragón de Estrellas Negras',
+      name: 'El gran viaje',
       episodeStart: 1,
       episodeEnd: 16,
-      summary: 'Gokū niño viaja por el espacio para recuperar las esferas antes de que la Tierra explote.',
+      summary: 'Goku niño viaja por el espacio para recuperar las esferas antes de que la Tierra explote.',
       season: 1,
       year: 1996
     },
@@ -249,7 +249,7 @@ export class SagasService {
     {
       id: 203,
       series: 'Dragon Ball GT',
-      name: 'Super N°17',
+      name: 'Super Número 17',
       episodeStart: 41,
       episodeEnd: 47,
       summary: 'Fusión de N°17 y Hell Fighter N°17 que crea a Super 17.',
@@ -273,10 +273,10 @@ export class SagasService {
     {
       id: 301,
       series: 'Dragon Ball Super',
-      name: 'Batalla de los Dioses',
+      name: 'La Batalla de los Dioses',
       episodeStart: 1,
       episodeEnd: 14,
-      summary: 'Aparición de Bills, el Dios de la Destrucción; Gokū alcanza el SSJ Dios.',
+      summary: 'Aparición de Bills, el Dios de la Destrucción; Goku alcanza el SSJ Dios.',
       season: 1,
       year: 2015
     },
@@ -286,7 +286,7 @@ export class SagasService {
       name: 'La Resurrección de Freezer',
       episodeStart: 15,
       episodeEnd: 27,
-      summary: 'Freezer es resucitado; Gokū y Vegeta entrenan con Whis.',
+      summary: 'Freezer es resucitado; Goku y Vegeta entrenan con Whis.',
       season: 1,
       year: 2015
     },
@@ -303,7 +303,7 @@ export class SagasService {
     {
       id: 304,
       series: 'Dragon Ball Super',
-      name: 'Trunks del Futuro / Goku Black',
+      name: 'Goku Black',
       episodeStart: 47,
       episodeEnd: 76,
       summary: 'Amenaza de Goku Black y Zamasu; viajes temporales y fusión.',
@@ -313,10 +313,10 @@ export class SagasService {
     {
       id: 305,
       series: 'Dragon Ball Super',
-      name: 'Supervivencia Universal (Torneo del Poder)',
+      name: 'Torneo del Poder',
       episodeStart: 77,
       episodeEnd: 131,
-      summary: 'Torneo entre múltiples universos con existencia en juego; Gokū alcanza el Ultra Instinto.',
+      summary: 'Torneo entre múltiples universos con existencia en juego; Goku alcanza el Ultra Instinto.',
       season: 3,
       year: 2017
     }

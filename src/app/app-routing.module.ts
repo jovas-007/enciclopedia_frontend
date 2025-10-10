@@ -9,6 +9,7 @@ import { PersonajesApiScreenComponent } from './screens/personajes-api-screen/pe
 //vista de estadisticas
 import { EstadisticasScreenComponent } from './screens/estadisticas-screen/estadisticas-screen.component';
 import { EstadisticasApiScreenComponent } from './screens/estadisticas-api-screen/estadisticas-api-screen.component';
+import { EpisodiosScreenComponent } from './screens/episodios-screen/episodios-screen.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: "personajes", component: PersonajesScreenComponent, pathMatch: 'full'},
   { path: "transformaciones", component: TransformacionesScreenComponent, pathMatch: 'full'},
   { path: "sagas", component: SagasScreenComponent, pathMatch: 'full'},
+  { path: "episodios", component: EpisodiosScreenComponent, pathMatch: 'full'},
   { path: "personajes-api", component: PersonajesApiScreenComponent, pathMatch: 'full'},
   { path: 'estadisticas', component: EstadisticasScreenComponent, pathMatch: 'full' },
   { path: "estadisticas-api", component: EstadisticasApiScreenComponent, pathMatch: 'full' }  // nueva ruta

@@ -57,7 +57,8 @@ section.sagas-screen {
 .toolbar-label {
   margin-right: 2px;
   font-size: .9rem;
-  color: var(--text-secondary);
+  color: #FFFFFF;
+  font-weight: bold;
   white-space: nowrap;
   line-height: 40px;     /* alinea con altura de los “pill” */
 }
@@ -160,7 +161,7 @@ section.sagas-screen {
   /* caja del field (outlined) */
   ::ng-deep .mdc-text-field--outlined {
     background: #fff !important;          /* fondo normal, no degradé */
-    border-radius: 12px !important;        /* redondeado (ajústalo si quieres píldora: 999px) */
+    border-radius: 999px !important;        /* redondeado (ajústalo si quieres píldora: 999px) */
     box-shadow: none !important;           /* quita sombras raras */
   }
 
@@ -169,11 +170,12 @@ section.sagas-screen {
     background: transparent !important;
   }
 
-  /* bordes del outlined (incluye la muesca central) */
+  /* bordes del outlined (incluye la muesca central) elimina el borde que se ve en la parte trasera */
   ::ng-deep .mdc-notched-outline__leading,
   ::ng-deep .mdc-notched-outline__notch,
   ::ng-deep .mdc-notched-outline__trailing {
-    border-color: rgba(0,0,0,.25) !important;   /* gris suave por defecto */
+    border: none!important;
+    //border-color: rgba(0,0,0,.25) !important;   /* gris suave por defecto */
   }
 
   /* hover más marcado */
@@ -234,9 +236,12 @@ section.sagas-screen {
     background: linear-gradient(135deg, var(--primary-orange), var(--primary-blue));
     color: #fff;
   }
+
+  /* Elimina el borde que se ve en la parte trasera del select */
   ::ng-deep .mdc-notched-outline__leading,
   ::ng-deep .mdc-notched-outline__trailing {
-    border-color: rgba(255,255,255,0.25) !important;
+    border: none!important;
+    //border-color: rgba(255,255,255,0.25) !important;
   }
   ::ng-deep .mat-mdc-select-value,
   ::ng-deep .mat-mdc-select-arrow,
@@ -531,41 +536,44 @@ section.sagas-screen {
 }
 
 ::ng-deep .mat-mdc-paginator-page-size-label {
-    color: #000000 !important; /* texto blanco */
+    color: #FFFFFF !important; /* texto blanco */
     font-size: 12px !important; /* tamaño de fuente más grande */
+    font-weight: bold !important;
 }
 
 ::ng-deep .mat-mdc-paginator-range-label {
-    color: #000000 !important; /* texto blanco */
+    color: #FFFFFF !important; /* texto blanco */
     font-size: 12px !important; /* tamaño de fuente más grande */
+    font-weight: bold !important;
 }
 
 /* Elimina el borde que se ve en la parte trasera del select */
 ::ng-deep .mdc-notched-outline__leading,
 ::ng-deep .mdc-notched-outline__trailing {
-  border-color: #000000 !important;
-  color: #000000 !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
 }
 
 /* Cambia el color del texto del select a blanco */
 ::ng-deep .mat-mdc-select-value {
-    color: #000000 !important; /* texto blanco */
+    color: #FFFFFF !important; /* texto blanco */
     font-size: 12px !important; /* tamaño de fuente más grande */
+    font-weight: bold !important;
 }
 
 /* Apunta al contenedor del icono de la flecha */
 ::ng-deep .mat-mdc-select-arrow svg {
-    fill: #000000 !important; /* flecha negra */
+    fill: #FFFFFF !important; /* flecha blanca */
 }
 
 /* Apunta al icono de la flecha dentro del botón */
 ::ng-deep .mat-mdc-paginator-navigation-previous .mat-mdc-paginator-icon path {
-  fill: #000000 !important; /* Cambiar el color de la flecha a negro */
+  fill: #FFFFFF !important; /* Cambiar el color de la flecha a blanco */
 }
 
 /* Si la flecha no cambia de color debido a la prioridad de los estilos, fuerza la aplicación */
 ::ng-deep .mat-mdc-paginator-navigation-previous {
-  color: #000000 !important; /* Asegura que el color negro se aplique al icono y al texto */
+  color: #FFFFFF !important; /* Asegura que el color blanco se aplique al icono y al texto */
 }
 
 /* Cuando el botón "Anterior" está deshabilitado */
@@ -580,14 +588,13 @@ section.sagas-screen {
 
 /* Apunta al icono de la flecha "Siguiente" dentro del botón */
 ::ng-deep .mat-mdc-paginator-navigation-next .mat-mdc-paginator-icon path {
-  fill: #000000 !important; /* Cambiar el color de la flecha a negro */
+  fill: #FFFFFF !important; /* Cambiar el color de la flecha a blanco */
 }
 
 /* Asegura que el color blanco se aplique al icono y al texto si es necesario */
 ::ng-deep .mat-mdc-paginator-navigation-next {
-  color: #000000 !important; /* Asegura que el color blanco se aplique al icono y al texto */
+  color: #FFFFFF !important; /* Asegura que el color blanco se aplique al icono y al texto */
 }
-
 
 /* ===== Estados vacíos / info ===== */
 .empty-state,
@@ -605,4 +612,129 @@ section.sagas-screen {
   outline: 3px solid rgba(25,118,210,.25);
   outline-offset: 3px;
   border-radius: 12px;
+}
+
+
+/* ================================
+ * Listado de EPISODIOS por saga
+ * (dentro de .panel-body)
+ * ================================ */
+
+.ep-section { margin-top: 8px; }
+
+.ep-title {
+  margin: 0 0 8px;
+  font-family: 'Orbitron', monospace;
+  font-weight: 800;
+  letter-spacing: .6px;
+  color: var(--primary-blue);
+  text-transform: uppercase;
+  font-size: .95rem;
+}
+
+/* Loader perezoso por panel */
+.ep-loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  padding: 6px 0;
+
+  ::ng-deep .mat-mdc-progress-spinner { --mdc-circular-progress-active-indicator-color: var(--primary-blue); }
+}
+
+/* Lista */
+.ep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ep-item { margin: 6px 0; }
+
+/* Enlace de episodio (o span deshabilitado con misma apariencia) */
+.ep-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #1f2937;                 /* gris oscuro legible */
+  line-height: 1.25;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: background .15s ease, transform .05s ease, color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ep-link:hover { background: #f2f4f7; }
+.ep-link:active { transform: translateY(1px); }
+
+/* Estado “deshabilitado” (Dragon Ball clásico sin link por ahora) */
+.ep-link.is-disabled {
+  cursor: default;
+  color: #9aa0a6;
+}
+.ep-link.is-disabled:hover { background: transparent; }
+
+/* Icono “esfera del dragón” (usamos 'grade' relleno) */
+.ep-bullet {
+  font-variation-settings: 'FILL' 1; /* material symbols filled */
+  color: #ff7a00;                    /* naranja cálido */
+  font-size: 20px;
+  width: 20px; height: 20px; line-height: 20px;
+}
+
+/* Texto del item */
+.ep-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0; /* para permitir truncado si se requiere */
+}
+
+.ep-num {
+  font-weight: 700;
+  color: #5f6368; /* gris medio */
+  white-space: nowrap;
+}
+
+.ep-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Etiqueta auxiliar (“Próximamente”) */
+.ep-tag {
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+.ep-tag--pending {
+  background: #ffe8cc;
+  color: #9a4600;
+  border: 1px solid rgba(154,70,0,.16);
+}
+
+/* Mensaje sin episodios */
+.ep-empty {
+  margin: 4px 0 0;
+  color: var(--text-secondary);
+  font-size: .95rem;
+}
+
+.ep-icon {
+  width: 20px;  /* Ajusta el tamaño de la imagen */
+  height: 20px; /* Mantén el aspecto cuadrado */
+  margin-right: 8px; /* Espaciado entre la imagen y el texto */
+}
+
+/* Ajustes responsivos suaves */
+@media (max-width: 599px) {
+  .ep-link { padding: 8px 8px; }
+  .ep-text { gap: 6px; }
+  .ep-name { overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 78vw; }
 }
