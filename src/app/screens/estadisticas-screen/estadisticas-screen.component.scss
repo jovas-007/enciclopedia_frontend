@@ -42,7 +42,7 @@ app-page-header {
 /* =========================
    TOOLBAR (con mat-select)
    ========================= */
-  /* ============================
+/* ============================
    TOOLBAR (mobile-first)
    ============================ */
 .toolbar {
@@ -73,9 +73,9 @@ app-page-header {
    MAT-SELECT “pastilla” (mobile-first)
    ============================ */
 .orden-mat-field {
-  display: inline-block;  /* evita que se estire a todo el ancho */
+  display: inline-block; /* evita que se estire a todo el ancho */
   width: auto;
-  max-width: 240px;       /* base móvil */
+  max-width: 240px; /* base móvil */
   border-radius: 999px;
 
   /* 1) Elimine bordes/overlays nativos de Material */
@@ -96,31 +96,37 @@ app-page-header {
   /* 2) Trigger = botón pastilla degradado */
   ::ng-deep .mat-mdc-select-trigger {
     border-radius: 999px;
-    background: linear-gradient(135deg, var(--primary-orange), var(--primary-blue));
-    padding: 10px 34px 10px 14px;  /* compacto para móvil */
+    background: linear-gradient(
+      135deg,
+      var(--primary-orange),
+      var(--primary-blue)
+    );
+    padding: 10px 34px 10px 14px; /* compacto para móvil */
     color: #fff;
     font-weight: 600;
     border: 1px solid transparent;
-    box-shadow: 0 4px 14px rgba(0,0,0,.15);
-    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    transition: transform 0.12s ease, box-shadow 0.12s ease,
+      border-color 0.12s ease;
     outline: none !important;
-    min-width: auto;  /* base móvil */
+    min-width: auto; /* base móvil */
   }
   ::ng-deep .mat-mdc-select-trigger:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.22);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
     cursor: pointer;
   }
   ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-select-trigger {
-    box-shadow:
-      0 0 0 2px rgba(255,235,59,.25),
-      0 8px 24px rgba(0,0,0,.22);
+    box-shadow: 0 0 0 2px rgba(255, 235, 59, 0.25),
+      0 8px 24px rgba(0, 0, 0, 0.22);
     border-color: #ffeb3b;
   }
 
   /* 3) Texto y flecha en blanco */
   ::ng-deep .mat-mdc-select-value,
-  ::ng-deep .mat-mdc-select-arrow { color: #fff; }
+  ::ng-deep .mat-mdc-select-arrow {
+    color: #fff;
+  }
 
   /* 4) Alineación vertical */
   ::ng-deep .mat-mdc-form-field-infix {
@@ -129,11 +135,15 @@ app-page-header {
   }
 
   /* 5) Sin subscript (hints) */
-  ::ng-deep .mat-mdc-form-field-subscript-wrapper { display: none !important; }
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
 
   /* 6) Sin outline al enfocar */
   ::ng-deep .mat-mdc-select-trigger:focus,
-  ::ng-deep .mat-mdc-select-trigger:focus-visible { outline: none !important; }
+  ::ng-deep .mat-mdc-select-trigger:focus-visible {
+    outline: none !important;
+  }
 }
 
 /* ============================
@@ -141,23 +151,34 @@ app-page-header {
    ============================ */
 /* ≥600px (tableta) */
 @media (min-width: 600px) {
-  .toolbar { column-gap: 12px; }
+  .toolbar {
+    column-gap: 12px;
+  }
 
   .orden-mat-field {
     max-width: 260px;
-    ::ng-deep .mat-mdc-select-trigger { min-width: 220px; padding: 10px 36px 10px 16px; }
+    ::ng-deep .mat-mdc-select-trigger {
+      min-width: 220px;
+      padding: 10px 36px 10px 16px;
+    }
   }
 
-  .toolbar-label { font-size: 0.95rem; }
+  .toolbar-label {
+    font-size: 0.95rem;
+  }
 }
 
 /* ≥1024px (escritorio) */
 @media (min-width: 1024px) {
-  .toolbar { column-gap: 14px; }
+  .toolbar {
+    column-gap: 14px;
+  }
 
   .orden-mat-field {
     max-width: 260px; /* mantiene el mismo ancho visual que acordamos */
-    ::ng-deep .mat-mdc-select-trigger { min-width: 240px; }
+    ::ng-deep .mat-mdc-select-trigger {
+      min-width: 240px;
+    }
   }
 }
 
@@ -170,7 +191,7 @@ app-page-header {
   border-radius: 12px;
   padding: 24px;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* =========================
@@ -185,18 +206,18 @@ app-page-header {
 
 /* Card básica (estilo DBZ sobrio) */
 .card {
-  background: #2b2b2b;       /* fondo oscuro como referencia DBZ */
+  background: #2b2b2b; /* fondo oscuro como referencia DBZ */
   color: #fff;
   border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-  transition: transform .25s ease, box-shadow .25s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
   }
 }
 
@@ -210,7 +231,7 @@ app-page-header {
 }
 .character-image {
   width: 100%;
-  height: 320px;     /* altura suficiente para contener figuras completas */
+  height: 320px; /* altura suficiente para contener figuras completas */
   object-fit: contain;
 }
 
@@ -249,7 +270,7 @@ app-page-header {
     font-size: 0.95rem;
   }
   .value {
-    color: #ffd600;   /* amarillo DBZ */
+    color: #ffd600; /* amarillo DBZ */
     font-weight: 700;
     font-size: 1rem;
   }
@@ -288,7 +309,9 @@ app-page-header {
   padding: 0;
   margin-top: 4px;
 
-  &:hover { text-decoration: underline; }
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 /* =========================
@@ -406,11 +429,16 @@ app-page-header {
 }
 
 /* Por si existían estilos viejos que lo movían: anula posiciones absolutas */
-.acciones-toolbar { position: static !important; margin: 0 !important; }
+.acciones-toolbar {
+  position: static !important;
+  margin: 0 !important;
+}
 
 /* Responsive: reduce el ancho del select en pantallas pequeñas */
 @media (max-width: 768px) {
-  .orden-mat-field { width: 180px; }
+  .orden-mat-field {
+    width: 180px;
+  }
 }
 /* Layout base de la barra */
 .toolbar-row {
@@ -465,25 +493,30 @@ app-page-header {
 }
 
 /* Por si existían estilos viejos que lo movían: anula posiciones absolutas */
-.acciones-toolbar { position: static !important; margin: 0 !important; }
+.acciones-toolbar {
+  position: static !important;
+  margin: 0 !important;
+}
 
 /* Responsive: reduce el ancho del select en pantallas pequeñas */
 @media (max-width: 768px) {
-  .orden-mat-field { width: 180px; }
+  .orden-mat-field {
+    width: 180px;
+  }
 }
 /* ===== Paleta del tema (usa tus tonos) ===== */
 :root {
   --dbz-blue-500: #3b82f6;
-  --dbz-blue-500-rgb: 59,130,246;
+  --dbz-blue-500-rgb: 59, 130, 246;
 
   --dbz-orange-500: #f59e0b;
-  --dbz-orange-500-rgb: 245,158,11;
+  --dbz-orange-500-rgb: 245, 158, 11;
 
-  --dbz-text: #e5e7eb;     /* texto principal sobre fondo oscuro */
-  --dbz-muted: #94a3b8;    /* texto secundario/ticks */
-  --dbz-grid: rgba(255,255,255,.08);
-  --dbz-surface: rgba(255,255,255,.06);
-  --dbz-border: rgba(255,255,255,.12);
+  --dbz-text: #e5e7eb; /* texto principal sobre fondo oscuro */
+  --dbz-muted: #94a3b8; /* texto secundario/ticks */
+  --dbz-grid: rgba(255, 255, 255, 0.08);
+  --dbz-surface: rgba(255, 255, 255, 0.06);
+  --dbz-border: rgba(255, 255, 255, 0.12);
 }
 
 /* ===== Layout de la pantalla ===== */
@@ -511,28 +544,32 @@ app-page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .stats-title {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   color: var(--dbz-text);
-  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
 /* ===== Tarjeta de la gráfica ===== */
 .chart-card {
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.03)
+  );
   border: 1px solid var(--dbz-border);
   border-radius: 16px;
-  box-shadow: 0 6px 24px rgba(0,0,0,.25);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 
   .chart-body {
-    padding: .75rem 1rem 1rem;
+    padding: 0.75rem 1rem 1rem;
   }
 
   .chart-canvas {
@@ -547,16 +584,16 @@ app-page-header {
 }
 :root {
   --dbz-blue-500: #3b82f6;
-  --dbz-blue-500-rgb: 59,130,246;
+  --dbz-blue-500-rgb: 59, 130, 246;
 
   --dbz-orange-500: #f59e0b;
-  --dbz-orange-500-rgb: 245,158,11;
+  --dbz-orange-500-rgb: 245, 158, 11;
 
   --dbz-text: #e5e7eb;
   --dbz-muted: #94a3b8;
-  --dbz-grid: rgba(255,255,255,.08);
-  --dbz-surface: rgba(255,255,255,.06);
-  --dbz-border: rgba(255,255,255,.12);
+  --dbz-grid: rgba(255, 255, 255, 0.08);
+  --dbz-surface: rgba(255, 255, 255, 0.06);
+  --dbz-border: rgba(255, 255, 255, 0.12);
 }
 
 .estadisticas-screen {
@@ -574,52 +611,200 @@ app-page-header {
   }
 }
 
-.stats-section { margin: 1.25rem 0 2rem; }
+.stats-section {
+  margin: 1.25rem 0 2rem;
+}
 
 .stats-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .stats-title {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 800;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   color: var(--dbz-text);
-  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
 .chart-card {
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.03)
+  );
   border: 1px solid var(--dbz-border);
   border-radius: 16px;
-  box-shadow: 0 6px 24px rgba(0,0,0,.25);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 
-  .chart-body { padding: .75rem 1rem 1.25rem; } /* un poco más de bottom por las fotos */
+  .chart-body {
+    padding: 0.75rem 1rem 1.25rem;
+  } /* un poco más de bottom por las fotos */
 
-  .chart-canvas { display: block; width: 100%; }
+  .chart-canvas {
+    display: block;
+    width: 100%;
+  }
 }
-/* ===== Overrides de legibilidad para Estadísticas (BD) ===== */
-/* Nota: el plugin de los nombres bajo las fotos toma el color de --dbz-muted,
-   así que lo ponemos negro también para que se noten más en el canvas. */
-:root {
-  --dbz-text:  #111827;   /* casi negro */
-  --dbz-muted: #111827;   /* nombres bajo la miniatura + ticks del eje Y */
+:host {
+  display: block;
 }
 
-/* Título de sección: apenas más grande y en negro */
+/* Contenedor principal de la pantalla */
+.estadisticas-api-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--background);
+}
+
+/* Main content – evitar que el navbar fijo cubra el contenido en móvil */
+.main-content {
+  flex: 1;
+  margin-top: calc(
+    56px + env(safe-area-inset-top, 0px)
+  ); /* altura navbar + safe area iOS */
+  padding: 16px;
+  transition: opacity 0.3s ease;
+}
+.main-content.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Encabezado de página (titulo y subtitulo) */
+app-page-header {
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* Estado "sin datos" */
+.empty-state {
+  margin: 1rem 0 2rem;
+  padding: 1.25rem 1.5rem;
+  color: var(--dbz-muted);
+  background: var(--dbz-surface);
+  border: 1px solid var(--dbz-border);
+  border-radius: 14px;
+  text-align: center;
+}
+
+/* Sección de cada gráfica */
+.stats-section {
+  margin: 1.25rem 0 2rem;
+}
+.stats-section + .stats-section {
+  margin-top: 2rem; /* separación extra entre secciones */
+}
+
+/* Título de cada sección (nombre de afiliación) */
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
 .stats-title {
-  font-size: 1.2rem;      /* antes 1.1rem */
+  margin: 0;
+  font-size: 1.1rem;
   font-weight: 800;
-  color: #111827;
-  text-shadow: none;      /* elimina halo que baja contraste */
+  letter-spacing: 0.2px;
+  color: var(--dbz-text);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
-/* Si quieres un poquito más de aire abajo por las fotos del eje X */
-.chart-card .chart-body {
-  padding-bottom: 1.2rem;
+/* Tarjeta contenedora de la gráfica */
+.chart-card {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.03)
+  );
+  border: 1px solid var(--dbz-border);
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.chart-body {
+  padding: 0.75rem 1rem 1.25rem; /* extra padding bottom para espacio bajo la gráfica (imágenes) */
+}
+.chart-canvas {
+  display: block;
+  width: 100%;
+}
+
+/* Variables de color (si no estuvieran globalmente, asegúrate de tenerlas definidas) */
+:root {
+  --dbz-blue-500: #3b82f6;
+  --dbz-blue-500-rgb: 59, 130, 246;
+  --dbz-orange-500: #f59e0b;
+  --dbz-orange-500-rgb: 245, 158, 11;
+  --dbz-text: #e5e7eb;
+  --dbz-muted: #94a3b8;
+  --dbz-grid: rgba(255, 255, 255, 0.08);
+  --dbz-surface: rgba(255, 255, 255, 0.06);
+  --dbz-border: rgba(255, 255, 255, 0.12);
+}
+/* =========================
+   Overrides SOLO de color (fondo blanco)
+   ========================= */
+
+/* 1) Variables en modo claro */
+:root {
+  --dbz-text: #1f2937;     /* texto principal (slate-800) */
+  --dbz-muted: #64748b;    /* texto secundario (slate-500) */
+  --dbz-grid: rgba(0, 0, 0, .06); /* líneas suaves en chart */
+  --dbz-surface: #fff;     /* superficies claras */
+  --dbz-border: rgba(0, 0, 0, .08); /* borde sutil */
+}
+
+/* 2) Fondo BLANCO en pantalla y main (sin degradados) */
+:host,
+.personajes-screen,
+.estadisticas-screen,
+.estadisticas-api-screen,
+.main-content {
+  background: #fff !important;
+  background-image: none !important;
+}
+
+/* 3) Cards/paneles: blanco sin degradado, borde y sombra suaves */
+.chart-card,
+.empty-state,
+.card,
+.dbz-panel,
+.stats-section .chart-card {
+  background: #fff !important;
+  background-image: none !important;
+  border: 1px solid var(--dbz-border) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04) !important;
+}
+
+/* 4) Tipografías sobre fondo claro */
+.stats-title,
+.character-name,
+.toolbar-label {
+  color: var(--dbz-text) !important;
+  text-shadow: none !important;
+}
+
+.character-details strong { color: var(--dbz-text) !important; }
+.description { color: #334155 !important; }       /* slate-700 */
+.character-details .value { color: #f59e0b !important; } /* conserva el amarillo DBZ */
+
+/* 5) Componentes Angular Material que heredan fondos */
+::ng-deep .mat-mdc-paginator {
+  background: #fff !important;
+  color: var(--dbz-text) !important;
+}
+
+/* (Opcional) Si alguna tarjeta seguía usando gradiente por un selector más específico */
+.chart-card::before,
+.chart-card::after {
+  background: none !important;
 }

@@ -4,6 +4,7 @@
   <div class="pf-left">
 
     <div class="pf-row">
+      <br>
       <mat-form-field appearance="outline" class="pf-field">
         <mat-label>Nombre</mat-label>
         <mat-icon matPrefix>person</mat-icon>
@@ -84,13 +85,7 @@
       </mat-error>
     </mat-form-field>
 
-    <div class="pf-actions">
-      <button mat-raised-button color="primary" type="submit"
-              [disabled]="loading || form.invalid" class="pill-btn">
-        {{ personaje ? 'Actualizar' : 'Crear' }}
-      </button>
-      <button mat-stroked-button type="button" (click)="cancelado.emit()">Cancelar</button>
-    </div>
+    
   </div>
 
   <!-- Columna derecha: archivo + preview -->
@@ -124,7 +119,14 @@
       </div>
     </ng-template>
   </div>
-
+  <br>
+<div class="pf-actions">
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="loading || form.invalid" class="pill-btn">
+        {{ personaje ? 'Actualizar' : 'Crear' }}
+      </button>
+      <button mat-stroked-button type="button" (click)="cancelado.emit()">Cancelar</button>
+    </div>
 </form>
 <!--
   Notas:

@@ -1,3 +1,4 @@
+<!-- estadisticas-screen.component.html -->
 <section class="estadisticas-screen" aria-label="Estadísticas de personajes DBZ">
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
@@ -14,22 +15,31 @@
       <p>No hay datos para mostrar.</p>
     </div>
 
-    <ng-container *ngIf="!isLoading">
-      <section *ngFor="let af of afiliaciones" class="stats-section">
+    <ng-container *ngIf="!isLoading && afiliaciones.length > 0">
+      <section
+        class="stats-section dbz-panel"
+        *ngFor="let af of afiliaciones; let i = index"
+        [attr.aria-labelledby]="'af-title-' + i">
+
         <header class="stats-header">
-          <h3 class="stats-title">{{ af }}</h3>
+          <h3 class="stats-title" [attr.id]="'af-title-' + i">{{ af }}</h3>
+          <small class="stats-count">
+            {{ estadisticas[af].length || 0 }} personajes
+          </small>
         </header>
 
+        <!-- Altura controlada por el contenedor para que quepan nombre+avatar -->
         <div class="chart-card">
-          <div class="chart-body">
+          <div class="chart-body" [style.height.px]="chartHeight + 100">
             <canvas
               baseChart
               class="chart-canvas"
+              [type]="'bar'"
               [data]="chartData[af]"
               [options]="chartOptionsByAf[af]"
-              [type]="'bar'"
               [plugins]="[imageTickPlugin]"
-              [height]="chartHeight">
+              [attr.aria-label]="'Gráfico de Total KI por personaje en ' + af"
+              [attr.role]="'img'">
             </canvas>
           </div>
         </div>

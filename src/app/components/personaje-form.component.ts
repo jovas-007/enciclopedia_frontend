@@ -14,6 +14,8 @@ export const imagenRequeridaValidator: ValidatorFn = (group: AbstractControl): V
   templateUrl: './personaje-form.component.html'
 })
 export class PersonajeFormComponent {
+
+  
   @Input() personaje?: Personaje | null;
   @Output() guardado = new EventEmitter<Personaje>();
   @Output() cancelado = new EventEmitter<void>();

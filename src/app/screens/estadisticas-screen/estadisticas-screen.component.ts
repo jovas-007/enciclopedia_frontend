@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+
 import { EstadisticasService, PersonajeStats } from '../../services/estadisticas.service';
 import { ChartConfiguration, Plugin } from 'chart.js';
+import { Component, OnInit, AfterViewInit, HostListener, ViewChildren, QueryList } from '@angular/core';
+import { BaseChartDirective } from 'ng2-charts';
 
 type PersonajeRow = PersonajeStats & { imagen_src?: string; imagen?: string };
 
@@ -10,11 +12,15 @@ type PersonajeRow = PersonajeStats & { imagen_src?: string; imagen?: string };
   styleUrls: ['./estadisticas-screen.component.scss']
 })
 export class EstadisticasScreenComponent implements OnInit {
+
+  
   isLoading = true;
 
+  // agrupación por afiliación
   estadisticas: Record<string, PersonajeStats[]> = {};
   afiliaciones: string[] = [];
 
+  // datos/options por afiliación
   chartData: Record<string, ChartConfiguration<'bar'>['data']> = {};
   chartOptionsByAf: Record<string, NonNullable<ChartConfiguration<'bar'>['options']>> = {};
 
@@ -32,7 +38,7 @@ export class EstadisticasScreenComponent implements OnInit {
         this.estadisticas = data;
         this.afiliaciones = Object.keys(data);
 
-        // Colores para Total KI
+        // Colores idénticos al componente de API
         const totalOrange   = this.tryRgba('--dbz-orange-500-rgb', 0.82, 'rgba(245,158,11,0.82)');
         const totalOrangeBd = this.tryRgba('--dbz-orange-500-rgb', 1,    'rgba(245,158,11,1)');
 
@@ -42,13 +48,13 @@ export class EstadisticasScreenComponent implements OnInit {
           const labels = personajes.map(p => this.truncate(p.nombre, 14));
           const imgs   = personajes.map(p => p.imagen_src || p.imagen || this.placeholder);
 
-          // SOLO Total KI
+          // SOLO Total KI (alineado al diseño API)
           const d: ChartConfiguration<'bar'>['data'] = {
             labels,
             datasets: [
               {
                 label: 'Total KI',
-                data: personajes.map(p => p.total_ki),
+                data: personajes.map(p => Number(p.total_ki) || 0),
                 backgroundColor: totalOrange,
                 borderColor: totalOrangeBd,
                 borderWidth: 1,
@@ -62,28 +68,28 @@ export class EstadisticasScreenComponent implements OnInit {
             ]
           };
 
-          // Guarda imágenes en el objeto data por si no vienen en las options
+          // guarda imágenes para el plugin (fallback exacto)
           (d as any)._tickImages = imgs;
 
           this.chartData[af] = d;
 
-          // Opciones base y plugin personalizados
-          const baseOpts = this.buildBaseOptions();
+          // opciones base + plugin con mismas fuentes/colores
+          const baseOpts   = this.buildBaseOptions();
+          const mutedColor = this.cssVar('--dbz-muted') || '#64748b';
 
           this.chartOptionsByAf[af] = {
             ...baseOpts,
             plugins: {
-              ...(baseOpts.plugins ?? {}),
+              ...(baseOpts.plugins || {}),
               legend: { display: false },
-              // Plugin que dibuja nombre + imagen (labels más grandes y negros)
               ...( {
                 imageTicks: {
                   images: imgs,
                   labels,
                   size: 30,
                   yOffset: 30,
-                  labelColor: '#36393fff', // negro
-                  font: '700 13px Inter, Roboto, "Helvetica Neue", Arial'
+                  labelColor: mutedColor,
+                  font: '700 11px Inter, Roboto, "Helvetica Neue", Arial'
                 }
               } as any )
             } as any
@@ -99,7 +105,7 @@ export class EstadisticasScreenComponent implements OnInit {
     });
   }
 
-  /** Plugin: oculta las etiquetas nativas y dibuja nombre + miniatura en el eje X */
+  /** Plugin: oculta etiquetas nativas y dibuja NOMBRE (encima) + IMAGEN circular (debajo) como en API */
   imageTickPlugin: Plugin<'bar'> = {
     id: 'imageTicks',
     afterDraw: (chart, _args, opts: any) => {
@@ -107,28 +113,25 @@ export class EstadisticasScreenComponent implements OnInit {
       const xScale: any = (scales as any).x;
       if (!xScale) return;
 
-      // Primer intento: tomar imágenes de opciones
+      // arrays a usar (options → fallback en data._tickImages)
       let imgUrls: string[] | undefined = opts?.images;
-      // Si no hay imágenes en options, tomar las que guardamos en data
-      if (!imgUrls || !imgUrls.length) {
-        imgUrls = (chart.data as any)?._tickImages as string[] | undefined;
-      }
+      if (!imgUrls?.length) imgUrls = (chart.data as any)?._tickImages as string[] | undefined;
       const labels: string[] = opts?.labels || (chart.data.labels as string[]);
 
       if (!imgUrls?.length) return;
 
       const size = opts?.size ?? 30;
       const half = size / 2;
-      const yImg = chartArea.bottom + (opts?.yOffset ?? 30);
-      const labelColor = opts?.labelColor || '#111827';
-      const font = opts?.font || '700 13px Inter, Roboto, "Helvetica Neue", Arial';
+      const yImg = chartArea.bottom + (opts?.yOffset ?? 28);
+      const labelColor = opts?.labelColor || '#64748b';
+      const font = opts?.font || '700 11px Inter, Roboto, "Helvetica Neue", Arial';
 
       (opts._cache ||= []);
 
       xScale.ticks.forEach((_tick: any, i: number) => {
         const x = xScale.getPixelForTick(i);
 
-        // Dibuja el nombre encima de la imagen
+        // === texto (encima de la imagen) ===
         const name = labels?.[i] ?? '';
         if (name) {
           ctx.save();
@@ -140,8 +143,8 @@ export class EstadisticasScreenComponent implements OnInit {
           ctx.restore();
         }
 
-        // Dibuja la imagen circular debajo del nombre
-        const src = imgUrls![i] || this.placeholder;
+        // === imagen (debajo del nombre) ===
+        const src = imgUrls![i];
         if (!src) return;
 
         let img: HTMLImageElement = opts._cache[i];
@@ -155,13 +158,20 @@ export class EstadisticasScreenComponent implements OnInit {
         if (!img.complete) return;
 
         ctx.save();
+        // fondo blanco para contraste (igual que en API)
+        ctx.beginPath();
+        ctx.arc(x, yImg, half, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+
+        // recorte circular y dibujo
         ctx.beginPath();
         ctx.arc(x, yImg, half, 0, Math.PI * 2);
         ctx.clip();
         ctx.drawImage(img, x - half, yImg - half, size, size);
         ctx.restore();
 
-        // Borde sutil
+        // borde sutil
         ctx.beginPath();
         ctx.arc(x, yImg, half, 0, Math.PI * 2);
         ctx.strokeStyle = 'rgba(0,0,0,.25)';
@@ -171,16 +181,20 @@ export class EstadisticasScreenComponent implements OnInit {
     }
   };
 
-  /** Opciones base: oculta etiquetas nativas de X y aumenta el padding inferior */
-  private buildBaseOptions(): NonNullable<ChartConfiguration<'bar'>['options']> {
-    const text  = this.cssVar('--dbz-text')  || '#1f2937';
-    const muted = this.cssVar('--dbz-muted') || '#64748b';
-    const grid  = this.cssVar('--dbz-grid')  || 'rgba(0,0,0,.06)';
+  /** Opciones base alineadas al componente API */
+ private buildBaseOptions(): NonNullable<ChartConfiguration<'bar'>['options']> {
+  const textColor  = this.cssVar('--dbz-text')  || '#1f2937';
+  const mutedColor = this.cssVar('--dbz-muted') || '#64748b';
+  const gridColor  = this.cssVar('--dbz-grid')  || 'rgba(0,0,0,.06)';
 
-    return {
-      responsive: true,
-      maintainAspectRatio: false,
-      layout: { padding: { top: 8, right: 12, bottom: 86, left: 4 } },
+  // tamaño del avatar (30) + separación (30) + margen seguridad (20) ≈ 80–90
+  // usamos 110 para asegurar que nunca se corte en distintos DPI
+  const bottomPadding = 110;
+
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: { padding: { top: 8, right: 12, bottom: bottomPadding, left: 4 } }, // espacio para NOMBRE + IMG
       scales: {
         x: {
           ticks: {
@@ -193,11 +207,11 @@ export class EstadisticasScreenComponent implements OnInit {
         },
         y: {
           ticks: {
-            color: muted,
+            color: mutedColor,
             font: { size: 12, family: 'Inter, Roboto, "Helvetica Neue", Arial' },
             callback: (v) => this.nfCompact.format(Number(v))
           },
-          grid: { color: grid },
+          grid: { color: gridColor },
           border: { display: false }
         }
       },
@@ -205,7 +219,7 @@ export class EstadisticasScreenComponent implements OnInit {
         legend: { display: false },
         tooltip: {
           backgroundColor: 'rgba(17,24,39,.95)',
-          titleColor: text,
+          titleColor: textColor,
           bodyColor: '#cbd5e1',
           borderColor: 'rgba(148,163,184,.25)',
           borderWidth: 1,
@@ -219,14 +233,14 @@ export class EstadisticasScreenComponent implements OnInit {
     };
   }
 
-  // ===== Helpers =====
+  // ===== utilidades =====
   private cssVar(name: string): string {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   }
 
-  private tryRgba(rgbVar: string, a: number, fallback: string): string {
+  private tryRgba(rgbVar: string, alpha: number, fallback: string): string {
     const val = this.cssVar(rgbVar);
-    return val ? `rgba(${val}, ${a})` : fallback;
+    return val ? `rgba(${val}, ${alpha})` : fallback;
   }
 
   private truncate(text: string, max = 14): string {
