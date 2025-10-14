@@ -80,8 +80,8 @@
           <ul class="character-details" aria-label="Detalles">
             <li><strong>Especie:</strong>   <span class="value">{{ p.especie }}</span></li>
             <li><strong>Género:</strong>    <span class="value">{{ p.genero }}</span></li>
-            <li><strong>Base KI:</strong>    <span class="value">{{ p.base_ki }}</span></li>
-            <li><strong>Total KI:</strong>   <span class="value">{{ p.total_ki }}</span></li>
+            <li><strong>Base KI:</strong>    <span class="value">{{ p.base_ki  | number:'1.0-0' }}</span></li>
+            <li><strong>Total KI:</strong>   <span class="value">{{ p.total_ki | number:'1.0-0' }}</span></li>
             <li><strong>Afiliación:</strong> <span class="value">{{ p.afiliacion }}</span></li>
           </ul>
 
