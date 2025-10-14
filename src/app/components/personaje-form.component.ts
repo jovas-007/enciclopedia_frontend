@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { PersonajesLocalService, Personaje } from '../services/personajes-local.service';
 
@@ -13,9 +13,8 @@ export const imagenRequeridaValidator: ValidatorFn = (group: AbstractControl): V
   selector: 'app-personaje-form',
   templateUrl: './personaje-form.component.html'
 })
-export class PersonajeFormComponent {
+export class PersonajeFormComponent implements OnChanges {
 
-  
   @Input() personaje?: Personaje | null;
   @Output() guardado = new EventEmitter<Personaje>();
   @Output() cancelado = new EventEmitter<void>();
@@ -25,18 +24,15 @@ export class PersonajeFormComponent {
     especie: ['', [Validators.required, Validators.maxLength(100)]],
     genero: ['', [Validators.required]],
 
-    // numéricos (tipo number) + min; el pattern se refuerza desde el input del HTML
+    // numéricos: la directiva appCommaThousands formatea con comas pero emite Number
     base_ki: [0, [Validators.required, Validators.min(0)]],
     total_ki: [0, [Validators.required, Validators.min(0)]],
 
     afiliacion: ['', [Validators.required, Validators.maxLength(100)]],
-
     descripcion: ['', [Validators.required]],
 
-    // OJO: ya no es required, porque la condición es (URL || archivo)
+    // no required aquí; la regla es (URL || archivo) a nivel grupo
     imagen_url: [''],
-
-    // nuevo control para el archivo
     imagen_file: [null as File | null]
   }, { validators: [imagenRequeridaValidator] });
 
@@ -46,14 +42,14 @@ export class PersonajeFormComponent {
 
   constructor(private fb: FormBuilder, private svc: PersonajesLocalService) {}
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     if (this.personaje) {
       this.form.patchValue({
         nombre: this.personaje.nombre,
         especie: this.personaje.especie,
         genero: this.personaje.genero,
-        base_ki: this.personaje.base_ki,
-        total_ki: this.personaje.total_ki,
+        base_ki: this.personaje.base_ki,     // números: la directiva los mostrará con comas
+        total_ki: this.personaje.total_ki,   // números: la directiva los mostrará con comas
         afiliacion: this.personaje.afiliacion,
         descripcion: this.personaje.descripcion ?? '',
         imagen_url: this.personaje.imagen_url ?? '',
@@ -65,10 +61,11 @@ export class PersonajeFormComponent {
       this.preview = null;
       this.file = undefined;
     }
-    this.form.updateValueAndValidity(); // revalida la regla URL || archivo
+    // revalida la regla URL || archivo
+    this.form.updateValueAndValidity();
   }
 
-  seleccionarArchivo(ev: Event) {
+  seleccionarArchivo(ev: Event): void {
     const input = ev.target as HTMLInputElement;
     if (!input.files || !input.files.length) return;
     this.file = input.files[0];
@@ -83,16 +80,16 @@ export class PersonajeFormComponent {
     reader.readAsDataURL(this.file);
   }
 
-  quitarArchivo() {
+  quitarArchivo(): void {
     this.file = undefined;
     this.form.get('imagen_file')?.setValue(null);
     this.form.get('imagen_file')?.markAsDirty();
     this.form.updateValueAndValidity();
 
-    this.preview = this.form.value.imagen_url || null;
+    this.preview = (this.form.value.imagen_url as string) || null;
   }
 
-  guardar() {
+  guardar(): void {
     if (this.form.invalid) return;
     this.loading = true;
 
@@ -110,6 +107,7 @@ export class PersonajeFormComponent {
       afiliacion: f.afiliacion ?? '',
       descripcion: f.descripcion ?? '',
       imagen_url: (f.imagen_url || undefined),
+      // gracias a la directiva, base_ki y total_ki ya son Number (sin comas)
       base_ki: Number(f.base_ki ?? 0),
       total_ki: Number(f.total_ki ?? 0),
     };

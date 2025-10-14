@@ -44,25 +44,35 @@
     </div>
 
     <div class="pf-row">
+      <!-- CAMPO MODIFICADO: Base Ki con separador de miles -->
       <mat-form-field appearance="outline" class="pf-field">
         <mat-label>Base Ki</mat-label>
         <mat-icon matPrefix>flash_on</mat-icon>
-        <input matInput type="number" min="0" step="1"
-               inputmode="numeric" pattern="^\d+$"
-               formControlName="base_ki" />
+        <input
+          matInput
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          formControlName="base_ki"
+          appCommaThousands />
         <mat-hint>Valor base de poder</mat-hint>
-        <mat-error *ngIf="form.controls.base_ki.hasError('required')">Valor numerico requerido</mat-error>
+        <mat-error *ngIf="form.controls.base_ki.hasError('required')">Valor numérico requerido</mat-error>
         <mat-error *ngIf="form.controls.base_ki.hasError('min')">Debe ser ≥ 0</mat-error>
       </mat-form-field>
 
+      <!-- CAMPO MODIFICADO: Total Ki con separador de miles -->
       <mat-form-field appearance="outline" class="pf-field">
         <mat-label>Total Ki</mat-label>
         <mat-icon matPrefix>bolt</mat-icon>
-        <input matInput type="number" min="0" step="1"
-               inputmode="numeric" pattern="^\d+$"
-               formControlName="total_ki" />
+        <input
+          matInput
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          formControlName="total_ki"
+          appCommaThousands />
         <mat-hint>Máximo registrado</mat-hint>
-        <mat-error *ngIf="form.controls.total_ki.hasError('required')">Valor numerico requerido</mat-error>
+        <mat-error *ngIf="form.controls.total_ki.hasError('required')">Valor numérico requerido</mat-error>
         <mat-error *ngIf="form.controls.total_ki.hasError('min')">Debe ser ≥ 0</mat-error>
       </mat-form-field>
     </div>
@@ -85,7 +95,6 @@
       </mat-error>
     </mat-form-field>
 
-    
   </div>
 
   <!-- Columna derecha: archivo + preview -->
@@ -119,21 +128,13 @@
       </div>
     </ng-template>
   </div>
+
   <br>
-<div class="pf-actions">
-      <button mat-raised-button color="primary" type="submit"
-              [disabled]="loading || form.invalid" class="pill-btn">
-        {{ personaje ? 'Actualizar' : 'Crear' }}
-      </button>
-      <button mat-stroked-button type="button" (click)="cancelado.emit()">Cancelar</button>
-    </div>
+  <div class="pf-actions">
+    <button mat-raised-button color="primary" type="submit"
+            [disabled]="loading || form.invalid" class="pill-btn">
+      {{ personaje ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button mat-stroked-button type="button" (click)="cancelado.emit()">Cancelar</button>
+  </div>
 </form>
-<!--
-  Notas:
-  - El formulario es un grid con dos columnas (izquierda: datos; derecha: imagen).
-  - Cada fila de la columna izquierda es un flexbox con dos campos (o uno si es full width).
-  - Los campos usan Angular Material y validaciones reactivas.
-  - La imagen se puede subir desde archivo o proporcionar por URL.
-  - La previsualización muestra la imagen seleccionada o una placeholder si no hay.
-  - Los botones usan estilos "pill" (bordes redondeados).
-  -->

@@ -55,10 +55,15 @@ import { Chart } from 'chart.js';
 import { registerables } from 'chart.js';
 import { EstadisticasApiScreenComponent } from './screens/estadisticas-api-screen/estadisticas-api-screen.component';
 import { EpisodiosScreenComponent } from './screens/episodios-screen/episodios-screen.component';
+
+//directiva de comas que esta en src/app/components
+import { CommaThousandsDirective } from './components/comma-thousands.directive';
+import { CommonModule } from '@angular/common';
 Chart.register(...registerables);
 
 @NgModule({
   declarations: [
+    CommaThousandsDirective,
     AppComponent,
     HomeScreenComponent,
     LoginScreenComponent,
@@ -79,6 +84,7 @@ Chart.register(...registerables);
     EpisodiosScreenComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
