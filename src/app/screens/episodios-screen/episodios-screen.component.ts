@@ -6,9 +6,10 @@ import { Saga, SagasService } from 'src/app/services/sagas.service';
 type Orden = 'natural' | 'az' | 'za';
 
 @Component({
-  selector: 'app-episodios-screen',
-  templateUrl: './episodios-screen.component.html',
-  styleUrls: ['./episodios-screen.component.scss'],
+    selector: 'app-episodios-screen',
+    templateUrl: './episodios-screen.component.html',
+    styleUrls: ['./episodios-screen.component.scss'],
+    standalone: false
 })
 export class EpisodiosScreenComponent implements OnInit {
   /* ===== Estado base ===== */

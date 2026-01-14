@@ -6,9 +6,10 @@ import { SagasService, Saga } from '../../services/sagas.service';
 export type Orden = 'natural' | 'az' | 'za';
 
 @Component({
-  selector: 'app-sagas-screen',
-  templateUrl: './sagas-screen.component.html',
-  styleUrls: ['./sagas-screen.component.scss'],
+    selector: 'app-sagas-screen',
+    templateUrl: './sagas-screen.component.html',
+    styleUrls: ['./sagas-screen.component.scss'],
+    standalone: false
 })
 export class SagasScreenComponent implements OnInit {
   /* ===== Estado base ===== */

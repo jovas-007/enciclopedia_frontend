@@ -8,9 +8,10 @@ import { TransformacionesService, ApiResponse, Personaje } from '../../services/
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-transformaciones-screen',
-  templateUrl: './transformaciones-screen.component.html',
-  styleUrls: ['./transformaciones-screen.component.scss']
+    selector: 'app-transformaciones-screen',
+    templateUrl: './transformaciones-screen.component.html',
+    styleUrls: ['./transformaciones-screen.component.scss'],
+    standalone: false
 })
 export class TransformacionesScreenComponent implements OnInit, OnDestroy {
 

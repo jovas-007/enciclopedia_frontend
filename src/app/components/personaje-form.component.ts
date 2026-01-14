@@ -10,8 +10,9 @@ export const imagenRequeridaValidator: ValidatorFn = (group: AbstractControl): V
 };
 
 @Component({
-  selector: 'app-personaje-form',
-  templateUrl: './personaje-form.component.html'
+    selector: 'app-personaje-form',
+    templateUrl: './personaje-form.component.html',
+    standalone: false
 })
 export class PersonajeFormComponent implements OnChanges {
 

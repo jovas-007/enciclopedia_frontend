@@ -6,9 +6,10 @@ import { Subscription } from 'rxjs';
 import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+    selector: 'app-sidenav',
+    templateUrl: './sidenav.component.html',
+    styleUrls: ['./sidenav.component.scss'],
+    standalone: false
 })
 export class SidenavComponent implements OnInit, OnDestroy {
   /** Estado del menú lateral: abierto (true) o cerrado (false) */

@@ -640,7 +640,7 @@ section.sagas-screen {
   color: var(--text-secondary);
   padding: 6px 0;
 
-  ::ng-deep .mat-mdc-progress-spinner { --mdc-circular-progress-active-indicator-color: var(--primary-blue); }
+  ::ng-deep .mat-mdc-progress-spinner { --mat-progress-spinner-active-indicator-color: var(--primary-blue); }
 }
 
 /* Lista */

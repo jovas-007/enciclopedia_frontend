@@ -1,6 +1,6 @@
-# Dragon Ball Enciclopedia — Frontend (Angular 16)
+# Dragon Ball Enciclopedia — Frontend (Angular 20)
 
-Este repositorio contiene el **frontend** de la enciclopedia de Dragon Ball. Está construido con **Angular 16.2.16**, consume la **Dragon Ball API** a través de un **proxy** de desarrollo (`/api → https://dragonball-api.com/api`) y se integra con un **backend Django** (pantalla basada en BD).
+Este repositorio contiene el **frontend** de la enciclopedia de Dragon Ball. Está construido con **Angular 20.3.14**, consume la **Dragon Ball API** a través de un **proxy** de desarrollo (`/api → https://dragonball-api.com/api`) y se integra con un **backend Django** (pantalla basada en BD).
 
 > **Objetivo**: ofrecer dos pantallas de personajes:
 >
@@ -31,7 +31,7 @@ Este repositorio contiene el **frontend** de la enciclopedia de Dragon Ball. Est
 
 ## Características
 
-* **Angular 16.2.16** (TypeScript \~5.1) con **RxJS 7.8**.
+* **Angular 20.3.14** (TypeScript ~5.7) con **RxJS 7.8**.
 * **Proxy de desarrollo** para consumir la **Dragon Ball API** usando rutas relativas (`/api`).
 * **Pantallas duales**:
 
@@ -43,10 +43,11 @@ Este repositorio contiene el **frontend** de la enciclopedia de Dragon Ball. Est
 
 ## Stack y versiones
 
-* **Node.js**: 18.19.0
-* **npm**: 10.2.3
-* **Angular CLI**: 16.2.16
-* **Angular**: 16.2.16 (core, router, forms, etc.)
+* **Node.js**: 24.12.0
+* **npm**: 10.9.0 (o superior)
+* **Angular CLI**: 20.3.11
+* **Angular**: 20.3.14 (core, router, forms, etc.)
+* **TypeScript**: 5.7.2
 * **RxJS**: 7.8.x
 * **zone.js**: 0.13.x
 

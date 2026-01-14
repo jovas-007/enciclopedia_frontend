@@ -3,13 +3,15 @@ import { EstadisticasService, PersonajeStats } from '../../services/estadisticas
 import { ChartConfiguration, Plugin } from 'chart.js';
 import { Component, OnInit, AfterViewInit, HostListener, ViewChildren, QueryList } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
+import { KiParser } from '../../utils/ki-parser.util';
 
 type PersonajeRow = PersonajeStats & { imagen_src?: string; imagen?: string };
 
 @Component({
-  selector: 'app-estadisticas-screen',
-  templateUrl: './estadisticas-screen.component.html',
-  styleUrls: ['./estadisticas-screen.component.scss']
+    selector: 'app-estadisticas-screen',
+    templateUrl: './estadisticas-screen.component.html',
+    styleUrls: ['./estadisticas-screen.component.scss'],
+    standalone: false
 })
 export class EstadisticasScreenComponent implements OnInit {
 
@@ -44,17 +46,26 @@ export class EstadisticasScreenComponent implements OnInit {
 
         for (const af of this.afiliaciones) {
           const personajes = (data[af] ?? []) as PersonajeRow[];
+          
+          // Filtrar personajes excluidos (Zeno, Gogeta, Vegetto, Broly)
+          const personajesFiltrados = personajes.filter(p => {
+            const nombreLower = p.nombre.toLowerCase();
+            return !nombreLower.includes('zeno') && 
+                   !nombreLower.includes('gogeta') && 
+                   !nombreLower.includes('vegetto') &&
+                   !nombreLower.includes('broly');
+          });
 
-          const labels = personajes.map(p => this.truncate(p.nombre, 14));
-          const imgs   = personajes.map(p => p.imagen_src || p.imagen || this.placeholder);
+          const labels = personajesFiltrados.map(p => this.truncate(p.nombre, 14));
+          const imgs   = personajesFiltrados.map(p => p.imagen_src || p.imagen || this.placeholder);
 
-          // SOLO Total KI (alineado al diseño API)
+          // BASE KI (alineado al diseño API)
           const d: ChartConfiguration<'bar'>['data'] = {
             labels,
             datasets: [
               {
-                label: 'Total KI',
-                data: personajes.map(p => Number(p.total_ki) || 0),
+                label: 'Base KI',
+                data: personajesFiltrados.map(p => Number(p.base_ki) || 0),
                 backgroundColor: totalOrange,
                 borderColor: totalOrangeBd,
                 borderWidth: 1,
@@ -209,7 +220,7 @@ export class EstadisticasScreenComponent implements OnInit {
           ticks: {
             color: mutedColor,
             font: { size: 12, family: 'Inter, Roboto, "Helvetica Neue", Arial' },
-            callback: (v) => this.nfCompact.format(Number(v))
+            callback: (v) => KiParser.format(Number(v))
           },
           grid: { color: gridColor },
           border: { display: false }
@@ -225,7 +236,7 @@ export class EstadisticasScreenComponent implements OnInit {
           borderWidth: 1,
           padding: 12,
           callbacks: {
-            label: (ctx) => `${this.nf.format(ctx.parsed.y)}`
+            label: (ctx) => `Base KI: ${KiParser.format(ctx.parsed.y ?? 0)}`
           }
         }
       },

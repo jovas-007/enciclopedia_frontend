@@ -8,9 +8,10 @@ import { PersonajeFormDialogComponent } from '../../components/personaje-form-di
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../components/confirm-dialog.component';
 
 @Component({
-  selector: 'app-personajes-screen',
-  templateUrl: './personajes-screen.component.html',
-  styleUrls: ['./personajes-screen.component.scss']
+    selector: 'app-personajes-screen',
+    templateUrl: './personajes-screen.component.html',
+    styleUrls: ['./personajes-screen.component.scss'],
+    standalone: false
 })
 export class PersonajesScreenComponent implements OnInit, OnDestroy {
   isLoading = true;

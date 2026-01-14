@@ -7,9 +7,10 @@ import { AuthService, User } from '../../services/auth.service';
 import { SidenavService } from '../../services/sidenav.service';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    standalone: false
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   /** Controla si el sidenav está abierto (se enlaza en el template) */

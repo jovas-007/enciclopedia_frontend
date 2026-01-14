@@ -1,7 +1,7 @@
 // app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -61,55 +61,49 @@ import { CommaThousandsDirective } from './components/comma-thousands.directive'
 import { CommonModule } from '@angular/common';
 Chart.register(...registerables);
 
-@NgModule({
-  declarations: [
-    CommaThousandsDirective,
-    AppComponent,
-    HomeScreenComponent,
-    LoginScreenComponent,
-    NavbarComponent,
-    SidenavComponent,
-    FooterComponent,
-    PageHeaderComponent,
-    LoadingSpinnerComponent,
-    PersonajesScreenComponent,
-    TransformacionesScreenComponent,
-    SagasScreenComponent,
-    PersonajeFormComponent,
-    PersonajeFormDialogComponent,
-    ConfirmDialogComponent,
-    PersonajesApiScreenComponent,
-    EstadisticasScreenComponent,
-    EstadisticasApiScreenComponent,
-    EpisodiosScreenComponent,
-  ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    // Módulos de Angular Material (una sola vez cada uno)
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    MatButtonModule,
-    MatPaginatorModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatMenuModule,
-    NgChartsModule,
-    MatProgressSpinnerModule
-  ],
-  providers: [
-    PersonajesLocalService,
-    PersonajesService,
-    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        CommaThousandsDirective,
+        AppComponent,
+        HomeScreenComponent,
+        LoginScreenComponent,
+        NavbarComponent,
+        SidenavComponent,
+        FooterComponent,
+        PageHeaderComponent,
+        LoadingSpinnerComponent,
+        PersonajesScreenComponent,
+        TransformacionesScreenComponent,
+        SagasScreenComponent,
+        PersonajeFormComponent,
+        PersonajeFormDialogComponent,
+        ConfirmDialogComponent,
+        PersonajesApiScreenComponent,
+        EstadisticasScreenComponent,
+        EstadisticasApiScreenComponent,
+        EpisodiosScreenComponent,
+    ],
+    bootstrap: [AppComponent], imports: [CommonModule,
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        // Módulos de Angular Material (una sola vez cada uno)
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatIconModule,
+        MatButtonModule,
+        MatPaginatorModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatMenuModule,
+        NgChartsModule,
+        MatProgressSpinnerModule], providers: [
+        PersonajesLocalService,
+        PersonajesService,
+        { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
 // src/app/app.module.ts

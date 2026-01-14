@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartConfiguration, Plugin } from 'chart.js';
 import { PersonajesService, Personaje } from '../../services/personajes.service';
+import { KiParser } from '../../utils/ki-parser.util';
 
 @Component({
-  selector: 'app-estadisticas-api-screen',
-  templateUrl: './estadisticas-api-screen.component.html',
-  styleUrls: ['./estadisticas-api-screen.component.scss']
+    selector: 'app-estadisticas-api-screen',
+    templateUrl: './estadisticas-api-screen.component.html',
+    styleUrls: ['./estadisticas-api-screen.component.scss'],
+    standalone: false
 })
 export class EstadisticasApiScreenComponent implements OnInit {
   isLoading = true;
@@ -33,6 +35,12 @@ export class EstadisticasApiScreenComponent implements OnInit {
         // agrupar por afiliación
         const grupos: Record<string, Personaje[]> = {};
         for (const pj of characters) {
+          // Omitir personajes específicos
+          const nombreLower = pj.name.toLowerCase();
+          if (nombreLower.includes('zeno') || nombreLower.includes('gogeta') || nombreLower.includes('vegetto') || nombreLower.includes('broly')) {
+            continue;
+          }
+          
           let af = pj.affiliation || 'Sin afiliación';
           if (af.toLowerCase() === 'unknown') af = 'Sin afiliación';
           (grupos[af] ||= []).push(pj);
@@ -50,15 +58,15 @@ export class EstadisticasApiScreenComponent implements OnInit {
           const labels = personajes.map(p => this.truncate(p.name, 14));
           const imgs   = personajes.map(p => p.image || this.placeholder);
 
-          // SOLO TOTAL KI (máximo)
-          const dataValsMax = personajes.map(p => this.parseKi(p.maxKi));
+          // BASE KI - usando KiParser robusto
+          const dataValsBase = personajes.map(p => KiParser.parse(p.ki));
 
           const d: ChartConfiguration<'bar'>['data'] = {
             labels,
             datasets: [
               {
-                label: 'Total KI',
-                data: dataValsMax,
+                label: 'Base KI',
+                data: dataValsBase,
                 backgroundColor: totalOrange,
                 borderColor: totalOrangeBd,
                 borderWidth: 1,
@@ -210,7 +218,7 @@ export class EstadisticasApiScreenComponent implements OnInit {
           ticks: {
             color: mutedColor,
             font: { size: 12, family: 'Inter, Roboto, "Helvetica Neue", Arial' },
-            callback: (v) => this.nfCompact.format(Number(v))
+            callback: (v) => KiParser.format(Number(v))
           },
           grid: { color: gridColor },
           border: { display: false }
@@ -228,7 +236,7 @@ export class EstadisticasApiScreenComponent implements OnInit {
           borderWidth: 1,
           padding: 12,
           callbacks: {
-            label: (ctx) => `${this.nf.format(ctx.parsed.y)}`
+            label: (ctx) => `Base KI: ${KiParser.format(ctx.parsed.y ?? 0)}`
           }
         }
       },
@@ -244,14 +252,6 @@ export class EstadisticasApiScreenComponent implements OnInit {
   private tryRgba(rgbVar: string, alpha: number, fallback: string): string {
     const val = this.cssVar(rgbVar);
     return val ? `rgba(${val}, ${alpha})` : fallback;
-  }
-
-  private parseKi(val: string | number | null | undefined): number {
-    if (val == null) return 0;
-    if (typeof val === 'number') return val;
-    const cleaned = val.replace(/[^\d.\-e+]/gi, ''); // deja números y notación científica
-    const n = Number(cleaned);
-    return isNaN(n) ? 0 : n;
   }
 
   private truncate(text: string, max = 14): string {

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { StatsService, DashboardStats } from 'src/app/services/stats.service';
 
 @Component({
-  selector: 'app-home-screen',
-  templateUrl: './home-screen.component.html',
-  styleUrls: ['./home-screen.component.scss']
+    selector: 'app-home-screen',
+    templateUrl: './home-screen.component.html',
+    styleUrls: ['./home-screen.component.scss'],
+    standalone: false
 })
 export class HomeScreenComponent implements OnInit {
   /** Controla la visibilidad del spinner de carga */

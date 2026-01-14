@@ -2,12 +2,13 @@ import { Directive, ElementRef, HostListener, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
-  selector: '[appCommaThousands]',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => CommaThousandsDirective),
-    multi: true
-  }]
+    selector: '[appCommaThousands]',
+    providers: [{
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => CommaThousandsDirective),
+            multi: true
+        }],
+    standalone: false
 })
 export class CommaThousandsDirective implements ControlValueAccessor {
   private onChange: (val: number | null) => void = () => {};

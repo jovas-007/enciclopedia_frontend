@@ -3,8 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Personaje } from '../services/personajes-local.service';
 
 @Component({
-  selector: 'app-personaje-form-dialog',
-  templateUrl: './personaje-form-dialog.component.html'
+    selector: 'app-personaje-form-dialog',
+    templateUrl: './personaje-form-dialog.component.html',
+    standalone: false
 })
 export class PersonajeFormDialogComponent {
   constructor(

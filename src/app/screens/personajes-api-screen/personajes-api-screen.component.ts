@@ -2,11 +2,13 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, 
 import { Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { PersonajesService, Personaje } from '../../services/personajes.service';
+import { KiParser } from '../../utils/ki-parser.util';
 
 @Component({
-  selector: 'app-personajes-api-screen',
-  templateUrl: './personajes-api-screen.component.html',
-  styleUrls: ['./personajes-api-screen.component.scss']
+    selector: 'app-personajes-api-screen',
+    templateUrl: './personajes-api-screen.component.html',
+    styleUrls: ['./personajes-api-screen.component.scss'],
+    standalone: false
 })
 export class PersonajesApiScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('ordenAnchor', { static: true }) ordenAnchor!: ElementRef<HTMLElement>;
@@ -98,13 +100,7 @@ export class PersonajesApiScreenComponent implements OnInit, OnDestroy, AfterVie
   private aplicarOrden(): void {
     const lista = [...this.personajes];
 
-    const parseKi = (ki: string): number => {
-      // Extrae un número “base” de la cadena (ej. "60.000.000" -> 60000000)
-      // Nota: es un parse simple para ordenar de forma aproximada
-      const limpio = (ki || '').toString().replace(/[^\d.]/g, '');
-      const n = Number(limpio);
-      return isNaN(n) ? -Infinity : n;
-    };
+    
 
     switch (this.ordenActual) {
       case 'nombre_asc':
@@ -114,10 +110,10 @@ export class PersonajesApiScreenComponent implements OnInit, OnDestroy, AfterVie
         lista.sort((a, b) => b.name.localeCompare(a.name));
         break;
       case 'ki_asc':
-        lista.sort((a, b) => parseKi(a.ki) - parseKi(b.ki));
+        lista.sort((a, b) => KiParser.parse(a.ki) - KiParser.parse(b.ki));
         break;
       case 'ki_desc':
-        lista.sort((a, b) => parseKi(b.ki) - parseKi(a.ki));
+        lista.sort((a, b) => KiParser.parse(b.ki) - KiParser.parse(a.ki));
         break;
     }
 
@@ -162,3 +158,4 @@ export class PersonajesApiScreenComponent implements OnInit, OnDestroy, AfterVie
     (ev.target as HTMLImageElement).src = 'assets/placeholder-dbz.png';
   }
 }
+
